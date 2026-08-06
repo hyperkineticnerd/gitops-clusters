@@ -1,0 +1,10 @@
+# Additional volumes on the output Deployment definition.
+volumes:
+  - name: config
+    secret:
+      secretName: redirecterr-config
+      defaultMode: 0600
+
+volumeMounts:
+  - name: config
+    mountPath: /config

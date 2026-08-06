@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-rhacm-gitops-project
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters: {}
+        # selector:
+        #   matchExpressions:
+        #     - key: vendor
+        #       operator: In
+        #       values:
+        #         - Openshift
+  template:
+    metadata:
+      name: '{{ .name }}-rhacm-gitops-project'
+    spec:
+      project: gitops
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: openshift-gitops
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: rhacm-gitops-project
+          targetRevision: 0.1.1
+          helm:
+            releaseName: '{{ .name }}'
+            valuesObject:
+              clusterName: '{{ .name }}'
+              clusterApiServer: '{{ .server }}'
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+          - CreateNamespace=true

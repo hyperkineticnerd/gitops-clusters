@@ -1,0 +1,39 @@
+
+operator:
+  enable: true
+  channel: stable-v26
+  installPlanApproval: Automatic
+  name: rhbk-operator
+  namespace: keycloak
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  additionalNamespaces:
+   - keycloak
+
+keycloakSpec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: 172.16.100.10
+    port: 5433
+    database: keycloak
+    passwordSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_PASSWORD
+    usernameSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_USERNAME
+  http:
+    httpEnabled: true
+    tlsSecret: keycloak-tls
+  hostname: 
+    # admin: keycloak.hknlab.io
+    adminUrl: https://keycloak.hknlab.io
+    hostname: keycloak.hknlab.io
+  ingress:
+    enabled: true
+    className: openshift-default
+    tlsSecret: keycloak-tls
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    #   route.openshift.io/termination: reencrypt

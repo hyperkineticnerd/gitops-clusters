@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-matrix-redis
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-matrix-redis'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: matrix-synapse
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/matrix-redis
+          ref: values
+
+        - repoURL: registry-1.docker.io/bitnamicharts
+          chart: redis
+          targetRevision: 27.0.13
+          helm:
+            releaseName: redis
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .name }}/values/matrix-redis.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

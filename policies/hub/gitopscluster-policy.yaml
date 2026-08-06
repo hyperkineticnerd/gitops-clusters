@@ -1,0 +1,94 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: hub-gitopscluster
+  namespace: open-cluster-management-policies
+  annotations:
+    argocd.argoproj.io/tracking-id: openshift-bootstrap-policies:policy.open-cluster-management.io/Policy:open-cluster-management-policies/hub-gitopscluster
+    policy.open-cluster-management.io/categories: ""
+    policy.open-cluster-management.io/controls: ""
+    policy.open-cluster-management.io/description: Ensure the GitOpsCluster CR is present and configured appropriately
+    policy.open-cluster-management.io/standards: ""
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-hub-gitopscluster
+        spec:
+          namespaceSelector:
+            include:
+              - open-cluster-management-policies
+          object-templates:
+            - objectDefinition:
+                apiVersion: apps.open-cluster-management.io/v1beta1
+                kind: GitOpsCluster
+                metadata:
+                  name: gitops-cluster
+                  namespace: openshift-gitops
+                spec:
+                  argoServer:
+                    argoNamespace: openshift-gitops
+                    cluster: local-cluster
+                  placementRef:
+                    apiVersion: cluster.open-cluster-management.io/v1beta1
+                    kind: Placement
+                    name: gitops-cluster-placement
+                    namespace: openshift-gitops
+              complianceType: musthave
+            - objectDefinition:
+                apiVersion: cluster.open-cluster-management.io/v1beta1
+                kind: Placement
+                metadata:
+                  name: gitops-cluster-placement
+                  namespace: openshift-gitops
+                spec:
+                  clusterSets:
+                    - global
+              complianceType: musthave
+          pruneObjectBehavior: None
+          remediationAction: enforce
+          severity: high
+  remediationAction: enforce
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: hub-gitopscluster-placement
+  namespace: open-cluster-management-policies
+  annotations:
+    argocd.argoproj.io/tracking-id: openshift-bootstrap-policies:cluster.open-cluster-management.io/Placement:open-cluster-management-policies/hub-gitopscluster-placement
+spec:
+  clusterSets:
+    - global
+  tolerations:
+    - key: cluster.open-cluster-management.io/unreachable
+      operator: Exists
+    - key: cluster.open-cluster-management.io/unavailable
+      operator: Exists
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchExpressions:
+            - key: name
+              operator: In
+              values:
+                - local-cluster
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: hub-gitopscluster-placement-binding
+  namespace: open-cluster-management-policies
+  annotations:
+    argocd.argoproj.io/tracking-id: openshift-bootstrap-policies:policy.open-cluster-management.io/PlacementBinding:open-cluster-management-policies/hub-gitopscluster-placement
+placementRef:
+  name: hub-gitopscluster-placement
+  kind: Placement
+  apiGroup: cluster.open-cluster-management.io
+subjects:
+  - name: hub-gitopscluster
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io

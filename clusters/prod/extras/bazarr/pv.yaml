@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-bazarr-config
+  labels:
+    fstype: nfs
+    app: bazarr
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/docker/volumes/bazarr
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-bazarr-movies
+  labels:
+    fstype: nfs
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/movies
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-bazarr-tv
+  labels:
+    fstype: nfs
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/tv
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain

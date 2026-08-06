@@ -1,0 +1,85 @@
+serverName: hknlab.io
+publicServerName: matrix.hknlab.io
+
+wellknown:
+  enabled: false
+
+signingkey:
+  existingSecret: matrix-synapse-signingkey
+  job:
+    enabled: false
+    annotations:
+      argocd.argoproj.io/hook: PreSync
+      argocd.argoproj.io/hook-delete-policy: HookSucceeded
+
+ingress:
+  enabled: true
+  className: openshift-default
+  includeUnderscoreSynapse: false
+  includeUnderscoreMatrix: false
+  annotations:
+    route.openshift.io/termination: edge
+    cert-manager.io/cluster-issuer: letsencrypt
+    # cert-manager.io/private-key-rotation-policy: always
+  tls:
+    - secretName: matrix-tls
+      hosts:
+        - hknlab.io
+        - matrix.hknlab.io
+    # - secretName: hknrd-tls
+    #   hosts:
+  paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: matrix-synapse
+          port:
+            number: 8008
+  csPaths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: matrix-synapse
+          port:
+            number: 8008
+
+postgresql:
+  enabled: false
+externalPostgresql:
+  host: 172.16.100.10
+  port: 5433
+  existingSecret: matrix-synapse-external-secrets
+  existingSecretPasswordKey: postgres-password
+
+redis:
+  enabled: false
+externalRedis:
+  host: redis-master.matrix-synapse.svc
+  port: 6379
+  existingSecret: matrix-synapse-external-secrets
+  existingSecretPasswordKey: redis-password
+
+config:
+  registrationSharedSecret: ""
+
+synapse:
+  extraVolumes:
+    - name: matrix-synapse-oidc-config
+      secret:
+        defaultMode: 420
+        secretName: matrix-synapse-oidc-config
+        items:
+          - key: oidc.yaml
+            path: oidc.yaml
+  extraVolumeMounts:
+    - name: matrix-synapse-oidc-config
+      mountPath: /synapse/config/conf.d/oidc.yaml
+      subPath: oidc.yaml
+
+# extraSecrets:
+
+# extraConfig:
+#   old_signing_keys:
+#     "ed25519:id": { key: "", expired_ts: 123456789123 }

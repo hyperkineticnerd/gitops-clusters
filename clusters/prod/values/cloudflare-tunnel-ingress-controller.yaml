@@ -1,0 +1,6 @@
+cloudflare:
+  secretRef:
+    name: cloudflare-external-secret
+    accountIDKey: CF_ACCOUNT_ID
+    tunnelNameKey: CF_TUNNEL_NAME
+    apiTokenKey: CF_API_TOKEN

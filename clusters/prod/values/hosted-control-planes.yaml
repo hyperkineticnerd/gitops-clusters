@@ -1,0 +1,39 @@
+cluster:
+  name: prod
+  baseDomain: openshift.hkn.lab
+  vips:
+    api: 172.16.143.1
+    ingress: 172.16.143.2
+
+release:
+  name: '4.18.42'
+  channel: eus-4.18
+  image: quay.io/openshift-release-dev/ocp-release:4.18.42-multi
+
+patch:
+  resources:
+    service/kube-apiserver:
+      annotations: 
+        metallb.io/loadBalancerIPs: '172.16.143.1'
+
+nodePool:
+  - name: prod-workers
+    replicas: 7
+
+clusterSet:
+  enabled: true
+  name: prod
+
+additionalLabels:
+  bannerColor: "c8102e"
+  bannerText: "Prod"
+  environment: production
+  env: prod
+  tridentVersion: 26.02.0
+  helmTridentVersion: 100.2602.0
+
+oauth:
+  name: FreeIPA
+  url: ldap://ipa1.hkn.lab/CN=Users,CN=Accounts,DC=HKN,DC=LAB?uid?sub?(uid=*)
+  externalSecretName: prod-bind-creds
+  bindDN: uid=admin,cn=users,cn=accounts,dc=hkn,dc=lab

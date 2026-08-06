@@ -1,0 +1,90 @@
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+## ref: https://docs.gitlab.com/ee/install/requirements.html#storage
+##
+persistence:
+  ## This volume persists generated data from users, like images, attachments...
+  ##
+  data:
+    enabled: true
+    size: 10Gi
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    # storageClass:
+    accessMode: ReadWriteOnce
+  # existingClaim: ""
+  plugins:
+    enabled: true
+    size: 1Gi
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    # storageClass:
+    accessMode: ReadWriteOnce
+  # existingClaim: ""
+
+ingress:
+  enabled: true
+  className: openshift-default
+  path: /
+  annotations:
+    route.openshift.io/termination: edge
+    external-dns.alpha.kubernetes.io/hostname: mattermost.hknlab.io
+    external-dns.alpha.kubernetes.io/target: dyn4.hknlab.io
+    # cert-manager.io/cluster-issuer: letsencrypt
+    # cert-manager.io/private-key-rotation-policy: always
+    # acme.cert-manager.io/http01-ingress-class: openshift-default
+  hosts:
+    - mattermost.apps.hub.ocp4.hkn.lab
+  tls: []
+    # - secretName: mattermost-tls
+    #   hosts:
+    #    - mattermost.hknlab.io
+
+route:
+  enabled: false
+
+externalDB:
+  enabled: true
+  externalDriverType: "postgres"
+  externalConnectionString: "mmuser:mattermost@172.16.100.10:5433/mattermost_production?sslmode=disable&connect_timeout=10"
+
+mysql:
+  enabled: false
+  mysqlUser: mattermost
+  mysqlPassword: mattermost
+  mysqlRootPassword: mattermost
+
+config:
+  MM_PLUGINSETTINGS_CLIENTDIRECTORY: "./client/plugins"
+  MM_PLUGINSETTINGS_ENABLE: "True"
+  MM_PLUGINSETTINGS_ENABLEUPLOADS: "True"
+  # MM_LDAPSETTINGS_ENABLE: "True"
+  # MM_LDAPSETTINGS_LOGINFIELDNAME: "True"
+  # MM_LDAPSETTINGS_LDAPSERVER: 
+  # MM_LDAPSETTINGS_LDAPPORT: 389
+  # MM_LDAPSETTINGS_BINDUSERNAME: uid=admin,cn=users,cn=accounts
+  # MM_LDAPSETTINGS_BINDPASSWORD: ""
+  # MM_LDAPSETTINGS_CONNECTIONSECURITY: ""
+  # MM_LDAPSETTINGS_SKIPCERTIFICATEVERIFICATION: "True"
+  # MM_LDAPSETTINGS_BASEDN: dc=hkn,dc=lab
+  # MM_LDAPSETTINGS_USERFILTER: ""
+  # MM_LDAPSETTINGS_GROUPFILTER: ""
+  # MM_LDAPSETTINGS_ENABLEADMINFILTER: "True"
+  # MM_LDAPSETTINGS_ADMINFILTER: ""
+
+extraInitContainers:
+  - command:
+      - sh
+      - '-c'
+      - chown -R 2000:2000 /client/plugins
+    image: busybox
+    name: changeowner
+    volumeMounts:
+      - mountPath: /client/plugins
+        name: mattermost-plugins
+
+securityContext:
+  fsGroup: 2000
+  fsGroupChangePolicy: "OnRootMismatch"

@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-sabnzbd
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-sabnzbd'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: arr-downloaders
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: sabnzbd
+          targetRevision: 0.1.2
+          helm:
+            releaseName: sabnzbd
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/sabnzbd.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/sabnzbd
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

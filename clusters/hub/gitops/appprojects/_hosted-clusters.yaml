@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hosted-clusters
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: clusters
+      server: https://kubernetes.default.svc
+    - namespace: hosted-clusters
+      server: https://kubernetes.default.svc
+    - namespace: openshift-ingress
+      server: https://kubernetes.default.svc
+    - namespace: clusters-dev
+      server: https://kubernetes.default.svc
+    - namespace: clusters-prod
+      server: https://kubernetes.default.svc
+    - namespace: clusters-test
+      server: https://kubernetes.default.svc
+    - namespace: clusters-test2
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - '*'
+status: {}

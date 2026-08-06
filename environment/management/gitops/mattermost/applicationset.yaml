@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-mattermost
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            environment: management
+  template:
+    metadata:
+      name: '{{ .name }}-mattermost'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: mattermost
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: cluster/{{.name}}/extras/mattermost
+          ref: values
+
+        - repoURL: https://helm.mattermost.com
+          chart: mattermost-team-edition
+          targetRevision: 6.6.84 
+          helm:
+            releaseName: mattermost
+            ignoreMissingValueFiles: true
+            valueFiles:
+              # - $values/environment/{{ .metadata.labels.environment }}/values/mattermost.yaml
+              - $values/clusters/hub/values/mattermost.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+          - CreateNamespace=true

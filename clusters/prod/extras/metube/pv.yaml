@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-metube-downloads
+  labels:
+    fstype: nfs
+    app: metube
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/docker/volumes/metube
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain

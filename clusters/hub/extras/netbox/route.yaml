@@ -1,0 +1,27 @@
+﻿kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: netbox
+  namespace: netbox
+  labels:
+    app: netbox
+    app.kubernetes.io/instance: netbox
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: netbox
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: netbox-0.2.0
+    service: webui
+    version: v1
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: netbox-netbox.apps.hub.ocp4.hkn.lab
+  to:
+    kind: Service
+    name: webui
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+  wildcardPolicy: None

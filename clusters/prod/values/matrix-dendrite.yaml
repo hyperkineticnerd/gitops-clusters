@@ -1,0 +1,21 @@
+# signing key to use
+signing_key:
+  # -- Create a new signing key, if not exists
+  create: false
+  # -- Use an existing secret
+  existingSecret: "my-dendrite-signing-key"
+
+ingress:
+  # -- Create an ingress for the deployment
+  enabled: false
+  # -- The ingressClass to use. Will be converted to annotation if not yet supported.
+  className: "openshift-default"
+  # -- Extra, custom annotations
+  annotations: {}
+  # -- The ingress hostname for your matrix server.
+  # Should align with the server_name and well_known_* hosts.
+  # If not set, generated from the dendrite_config values.
+  hostName: ""
+  # -- TLS configuration. Should contain information for the server_name and well-known hosts.
+  # Alternatively, set tls.generate=true to generate defaults based on the dendrite_config.
+  tls: []

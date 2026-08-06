@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-jellyseerr-config
+  labels:
+    fstype: nfs
+    app: jellyseerr
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/docker/volumes/jellyseerr
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain

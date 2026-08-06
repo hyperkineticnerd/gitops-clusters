@@ -1,0 +1,78 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: spoke-vault-auth
+  namespace: openshift-gitops
+  annotations:
+    policy.open-cluster-management.io/categories: ""
+    policy.open-cluster-management.io/controls: ""
+    policy.open-cluster-management.io/description: Ensure the vault-auth secret is added to deployed clusters
+    policy.open-cluster-management.io/standards: ""
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-vault-auth-secret
+        spec:
+          namespaceSelector:
+            include:
+              - openshift-gitops
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  role_id: '{{hub fromSecret "" "vault-auth" "role_id" hub}}'
+                  secret_id: '{{hub fromSecret "" "vault-auth" "secret_id" hub}}'
+                kind: Secret
+                metadata:
+                  name: vault-auth
+                  namespace: openshift-gitops
+                  annotations:
+                    managed-by: argocd.argoproj.io
+                  labels:
+                    argocd.argoproj.io/secret-type: repository
+                type: Opaque
+          pruneObjectBehavior: None
+          remediationAction: inform
+          severity: high
+  remediationAction: enforce
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: spoke-vault-auth-placement
+  namespace: openshift-gitops
+spec:
+  clusterSets:
+    - global
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchExpressions:
+            - key: name
+              operator: NotIn
+              values:
+                - local-cluster
+  tolerations:
+    - key: cluster.open-cluster-management.io/unreachable
+      operator: Exists
+    - key: cluster.open-cluster-management.io/unavailable
+      operator: Exists
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: spoke-vault-auth-placement-binding
+  namespace: openshift-gitops
+placementRef:
+  name: spoke-vault-auth-placement
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: spoke-vault-auth
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy

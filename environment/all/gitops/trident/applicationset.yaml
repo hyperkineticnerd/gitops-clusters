@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-netapp-trident
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        values:
+          env: '{{index .metadata.labels "environment"}}'
+          cluster: '{{.name}}'
+          trident: '{{ .metadata.labels.helmTridentVersion }}'
+        # selector:
+        #   matchExpressions:
+        #     - key: vendor
+        #       operator: In
+        #       values:
+        #         - Openshift
+  template:
+    metadata:
+      name: '{{ .name }}-trident'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: trident
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/trident
+          ref: values
+
+        - repoURL: https://netapp.github.io/trident-helm-chart
+          chart: trident-operator
+          targetRevision: '{{ .values.trident }}'  # 100.2602.0
+          helm:
+            releaseName: trident
+
+        - repoURL: https://charts.hknlab.io
+          chart: trident
+          targetRevision: 0.1.1
+          helm:
+            releaseName: trident-config
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/environment/{{ .values.env }}/values/trident.yaml
+              - $values/clusters/{{ .values.cluster }}/values/trident.yaml
+
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - RespectIgnoreDifferences=true
+
+      ignoreDifferences:
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: tridentconfigurators.trident.netapp.io
+          jqPathExpressions:
+          - .spec.versions[]? | .additionalPrinterColumns[]? | .priority

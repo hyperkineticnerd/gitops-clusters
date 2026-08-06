@@ -1,0 +1,37 @@
+networkInterface: eth0
+
+serviceAccount:
+  name: matter-server
+
+service:
+  port: 5580
+
+ingress:
+  enabled: true
+  className: "openshift-default"
+  annotations:
+    route.openshift.io/termination: edge
+  hosts:
+    - host: matter-server.apps.hub.ocp4.hkn.lab
+      paths: 
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+# volumes:
+#   - name: usb
+#     hostPath:
+#       path: /dev/ttyACM0
+#   - name: zbt-2
+#     hostPath:
+#       path: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_DCB4D90E828C-if00
+#       # type: CharDevice
+
+# volumeMounts:
+#   - name: usb
+#     mountPath: /dev/ttyACM0
+#   - name: zbt-2
+#     mountPath: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_DCB4D90E828C-if00
+
+# nodeSelector:
+#   feature.node.kubernetes.io/usb-ef_303a_831a.present: "true"

@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: nextcloud-via-cf-tunnel
+  namespace: nextcloud
+  # annotations:
+  #   route.openshift.io/termination: edge
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: nextcloud.hknlab.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nextcloud
+                port:
+                  name: http

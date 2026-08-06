@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-prowlarr-config
+  labels:
+    fstype: nfs
+    app: prowlarr
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/docker/volumes/prowlarr
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain
+

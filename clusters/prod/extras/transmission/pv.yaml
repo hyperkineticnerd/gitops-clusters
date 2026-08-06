@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-transmission-config
+  labels:
+    fstype: nfs
+    app: transmission
+spec:
+  capacity:
+    storage: 30Ti
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /volume1/docker/volumes/transmission
+    server: 172.16.100.10
+  persistentVolumeReclaimPolicy: Retain

@@ -1,0 +1,12 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleNotification
+metadata:
+  name: cluster-banner
+spec:
+  backgroundColor: '#007a33' # DOD Unclassed Green - SF 710
+  color: '#fff'
+  # link:
+  #   href: 'https://www.example.com'
+  #   text: Optional link text
+  location: BannerTopBottom 
+  text: Dev

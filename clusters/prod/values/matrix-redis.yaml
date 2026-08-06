@@ -1,0 +1,22 @@
+global:
+  storageClass: "basic"
+
+auth:
+  existingSecret: "redis"
+  existingSecretPasswordKey: "redis-password"
+
+master:
+  # resources: 
+  resourcesPreset: "nano"
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+replica:
+  # resources:
+  resourcesPreset: "nano"
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false

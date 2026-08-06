@@ -1,0 +1,23 @@
+rcpMountPath: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_DCB4D90E828C-if00 
+
+# uartBaudrate: 460800
+
+# backboneInterface: br-ex
+
+serviceAccount:
+  name: otbr
+
+service:
+  port: 8888
+
+ingress:
+  enabled: true
+  className: "openshift-default"
+  annotations:
+    route.openshift.io/termination: edge
+  hosts:
+    - host: otbr.apps.hub.ocp4.hkn.lab
+      paths: 
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []

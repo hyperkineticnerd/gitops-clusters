@@ -1,0 +1,5 @@
+ingressController:
+  existingSecret: ingress-certs-prod
+
+clusterProxy:
+  existingSecret: ''

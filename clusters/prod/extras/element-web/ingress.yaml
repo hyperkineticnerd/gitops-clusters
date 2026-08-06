@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: element-via-cf-tunnel
+  namespace: element-web
+  # annotations:
+  #   route.openshift.io/termination: edge
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: element.hknlab.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: element-web
+                port:
+                  name: http

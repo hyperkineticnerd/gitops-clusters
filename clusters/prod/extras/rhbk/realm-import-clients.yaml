@@ -1,0 +1,47 @@
+kind: KeycloakRealmImport
+apiVersion: k8s.keycloak.org/v2alpha1
+metadata:
+  name: keycloak-clients-external-realm-import
+  labels:
+    app: sso
+  namespace: keycloak
+spec:
+  keycloakCRName: keycloak
+  realm:
+    id: external
+    realm: external
+    displayName: External Users Realm
+    clients:
+      - clientId: jellyfin
+        name: jellyfin
+        description: Jellyfin Media Streaming
+        standardFlowEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        rootUrl: https://jellyfin.hknlab.io
+        secret: CHANGEME
+        redirectUris: 
+          - org.jellyfin.mobile://login-callback
+          - /sso/OID/redirect/keycloak
+      - clientId: jellyseerr
+        name: jellyseerr
+        description: Search and Requests for Jellyfin
+        standardFlowEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        rootUrl: https://jellyseerr.hknlab.io
+        secret: CHANGEME
+        redirectUris:
+          - /login/oidc/callback*
+      - clientId: synapse
+        name: Matrix Synapse
+        description: Matrix Synapse Chat
+        standardFlowEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        rootUrl: https://matrix.hknlab.io
+        secret: CHANGEME
+        redirectUris:
+          - /_synapse/client/oidc/callback/*
+        webOrigins:
+          - https://matrix.hknlab.io

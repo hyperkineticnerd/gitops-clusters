@@ -1,0 +1,37 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nfs-tdarr-server-media-movies
+  labels:
+    app: tdarr
+    fstype: nfs
+spec:
+  capacity:
+    storage: 30Ti
+  nfs:
+    server: 172.16.100.10
+    path: /volume1/movies
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nfs-tdarr-server-media-television
+  labels:
+    app: tdarr
+    fstype: nfs
+spec:
+  capacity:
+    storage: 30Ti
+  nfs:
+    server: 172.16.100.10
+    path: /volume1/tv
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem

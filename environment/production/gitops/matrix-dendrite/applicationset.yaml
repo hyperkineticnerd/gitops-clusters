@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-matrix-dendrite
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-matrix-dendrite'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: matrix-dendrite
+
+      sources:
+        # - repoURL: https://matrix-org.github.io/dendrite/
+        #   chart: dendrite
+        #   targetRevision: 0.14.6
+        #   helm:
+        #     releaseName: matrix-dendrite
+        #     valueFiles:
+        #       - $values/gitops/helm/valuefiles/matrix-dendrite.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/matrix-dendrite
+          ref: values
+
+        - repoURL: https://charts.hknlab.io
+          chart: matrix-dendrite
+          targetRevision: 0.1.0
+          helm:
+            releaseName: matrix-dendrite
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .name }}/values/matrix-dendrite.yaml
+
+      ignoreDifferences:
+        - group: Batch
+          kind: Job
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

@@ -1,0 +1,38 @@
+cluster:
+  name: test2
+  baseDomain: openshift.hkn.lab
+  vips:
+    api: 172.16.142.3
+    ingress: 172.16.142.4
+
+release:
+  name: '4.20.23'
+  channel: stable-4.20
+  image: quay.io/openshift-release-dev/ocp-release:4.20.23-multi
+
+patch:
+  resources:
+    service/kube-apiserver:
+      annotations: 
+        metallb.io/loadBalancerIPs: '172.16.142.3'
+    # namespace/clusters-test2:
+    #   labels:
+    #     k8s.ovn.org/primary-user-defined-network: ""
+
+clusterSet:
+  enabled: true
+  name: test
+
+additionalLabels:
+  bannerColor: "9d00ff"
+  bannerText: "Test2"
+  environment: testing
+  env: test
+  tridentVersion: 26.02.0
+  helmTridentVersion: 100.2602.0
+
+oauth:
+  name: FreeIPA
+  url: ldap://ipa1.hkn.lab/CN=Users,CN=Accounts,DC=HKN,DC=LAB?uid?sub?(uid=*)
+  externalSecretName: ldap-bind-creds
+  bindDN: uid=admin,cn=users,cn=accounts,dc=hkn,dc=lab

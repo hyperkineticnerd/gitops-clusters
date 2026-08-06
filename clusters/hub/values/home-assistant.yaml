@@ -1,0 +1,51 @@
+env:
+  - name: TZ
+    value: America/Chicago
+
+# securityContext:
+#   runAsUser: 0
+#   privileged: true
+
+ingress:
+  enabled: true
+  className: openshift-default
+  annotations:
+    route.openshift.io/termination: edge
+    # cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: home-assistant.apps.hub.ocp4.hkn.lab
+      paths: 
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+configuration:
+  enabled: true
+  forceInit: true
+  trusted_proxies:
+    - 10.128.0.0/14
+    - '10.128.0.2'
+  templateConfig: |-
+    # Loads default set of integrations. Do not remove.
+    default_config:
+
+    {{- if .Values.ingress.enabled }}
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        {{- range .Values.configuration.trusted_proxies }}
+        - {{ . }}
+        {{- end }}
+    {{- end}}
+    # Load frontend themes from the themes folder
+    frontend:
+      themes: !include_dir_merge_named themes
+
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteMany
+  storageClass: basic

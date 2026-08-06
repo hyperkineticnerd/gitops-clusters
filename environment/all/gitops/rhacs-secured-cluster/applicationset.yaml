@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-rhacs-secured-cluster
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        values:
+          env: '{{index .metadata.labels "environment"}}'
+          cluster: '{{ .name }}'
+        # selector:
+        #   matchExpressions:
+        #     - key: vendor
+        #       operator: In
+        #       values:
+        #         - Openshift
+  template:
+    metadata:
+      name: '{{ .name }}-rhacs-secured-cluster'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: stackrox
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: rhacs-secured-cluster
+          targetRevision: 0.1.0
+          helm:
+            releaseName: rhacs-secured-cluster
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/environment/{{ .values.env }}/values/rhacs-secured-cluster.yaml
+              - $values/clusters/{{ .values.cluster }}/values/rhacs-secured-cluster.yaml
+            valuesObject:
+              clusterName: '{{ .name }}'
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: environment/all/extras/rhacs-secured-cluster
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

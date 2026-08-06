@@ -1,0 +1,23 @@
+tridentBackendConfigs:
+  - name: backend-tbc-ontap-nas
+    spec:
+      credentials:
+        name: backend-tbc-ontap-nas-secret
+      dataLIF: 172.16.104.2
+      managementLIF: 172.16.104.1
+      nasType: nfs
+      storageDriverName: ontap-nas
+      svm: svm0
+      version: 1
+      storagePrefix: trident_test2
+
+  - name: backend-tbc-ontap-san
+    spec:
+      credentials:
+        name: backend-tbc-ontap-san-secret
+      managementLIF: 172.16.104.1
+      sanType: iscsi
+      storageDriverName: ontap-san
+      svm: svm1
+      version: 1
+      storagePrefix: trident_test2

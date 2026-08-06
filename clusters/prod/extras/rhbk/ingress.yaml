@@ -1,0 +1,22 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: keycloak-via-cf-tunnel
+  namespace: keycloak
+  annotations:
+    cloudflare-tunnel-ingress-controller.strrl.dev/backend-protocol: https
+    cloudflare-tunnel-ingress-controller.strrl.dev/proxy-ssl-verify: 'off'
+  #   route.openshift.io/termination: edge
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: keycloak.hknlab.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  name: https

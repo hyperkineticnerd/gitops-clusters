@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-zammad 
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-zammad'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: zammad
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/zammad
+          ref: values
+
+        - repoURL: https://zammad.github.io/zammad-helm
+          chart: zammad 
+          targetRevision: 15.2.3
+          helm:
+            releaseName: zammad
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/zammad.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
+      ignoreDifferences:
+        - group: batch
+          kind: Job
+          jsonPointers:
+            - /spec/template/metadata/labels # Example: ignore changes to labels in job template
+            - /status # Ignore changes to the Job's status field
+        - group: batch
+          kind: Job
+          name: zammad-init # Ignore differences for a specific Job by name
+          jsonPointers:
+            - /spec/template/spec/containers/0/image # Example: ignore image changes for a specific container in a job

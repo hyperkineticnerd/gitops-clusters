@@ -1,0 +1,29 @@
+postgresql:
+  auth:
+    username: "zammad"
+    replicationUsername: repl_user
+    database: "zammad_production"
+    existingSecret: zammad-postgresql
+    secretKeys:
+      adminPasswordKey: admin_password
+      userPasswordKey: password
+      replicationPasswordKey: replication_password
+
+secretKeys:
+  postgresql:
+    useExisting: true
+    secretKey: password
+    secretName: zammad-postgresql
+
+zammadConfig:
+  initJob:
+    randomName: false
+    annotations:
+      argocd.argoproj.io/hook: Sync
+      argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  postgresql:
+    enabled: false
+    db: zammad_production
+    host: '172.16.100.10'
+    port: 5433
+    user: zammad

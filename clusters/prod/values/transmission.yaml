@@ -1,0 +1,97 @@
+env:
+  # TRANSMISSION_BLOCKLIST_ENABLED: 'true'
+  # TRANSMISSION_BLOCKLIST_URL: https://github.com/Naunter/BT_BlockLists/raw/master/bt_blocklists.gz
+  PUID: "0"
+  PGID: "0"
+  TZ: America/Chicago
+
+service:
+  torrent:
+    enabled: false
+
+ingress:
+  enabled: true
+  className: "openshift-default"
+  annotations:
+    route.openshift.io/termination: edge
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: transmission.apps.prod.openshift.hkn.lab
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+persistence:
+  config: 
+    storageClassName: basic
+  downloads:
+    nfsServer: 172.16.100.10
+    nfsPath: /volume1/downloads
+
+securityContext:
+  allowPrivilegeEscalation: true  # Prevent privilege escalation
+  capabilities:
+    add:
+      - SETUID   # Required for UID changes
+      - SETGID   # Required for GID changes
+      - CHOWN    # Required for file ownership changes
+    drop:
+      - ALL      # Drop all other capabilities
+  readOnlyRootFilesystem: false  # linuxserver image needs to write to /config
+
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1"
+  limits:
+    memory: "4Gi"
+    cpu: "2"
+
+initContainers:
+  - name: gluetun
+    # image: qmcgaw/gluetun:v3.40.0
+    image: ghcr.io/qdm12/gluetun:latest
+    restartPolicy: Always
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+          - NET_ADMIN
+    envFrom:
+      - secretRef:
+          name: openvpn-secret
+    # volumeMounts:
+    #   - name: gluetun
+    #     mountPath: /gluetun
+
+extraVolumes:
+  - name: watch
+    nfs:
+      server: 172.16.100.10
+      path: /volume1/downloads/watch
+  # - name: gluetun-config
+  #   persistentVolumeClaim:
+  #     claimName: pvc-gluetun-config
+
+extraVolumeMounts:
+  - name: watch
+    mountPath: /watch
+
+# extraPersistentVolumes:
+#   - name: nfs-downloads-watch
+#     capacity: 2Ti
+#     accessModes:
+#       - ReadWriteMany
+#     storageClassName: ""
+#     nfs:
+#       server: 172.16.100.10
+#       path: /volume1/downloads/watch
+
+extraPersistentVolumeClaims:
+  - name: pvc-gluetun-config
+    storageClassName: basic
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi

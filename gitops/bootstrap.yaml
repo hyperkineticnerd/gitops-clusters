@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bootstrap-gitops
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+        revision: HEAD
+        files:
+          - path: environment/**/bootstrap.yaml
+  template:
+    metadata:
+      name: 'bootstrap-environment-{{ .path.basenameNormalized }}'
+    spec:
+      project: bootstrap
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: openshift-gitops
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: '{{ .path.path }}'
+
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true

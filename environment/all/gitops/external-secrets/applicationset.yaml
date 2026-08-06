@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-external-secrets
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters: {}
+        # selector:
+        #   matchExpressions:
+        #     - key: vendor
+        #       operator: In
+        #       values:
+        #         - Openshift
+  template:
+    metadata:
+      name: '{{ .name }}-external-secrets'
+    spec:
+      project: '{{.name}}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: external-secrets
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/external-secrets
+          ref: values
+
+        - repoURL: https://charts.external-secrets.io
+          chart: external-secrets
+          targetRevision: 2.3.0
+          helm:
+            releaseName: external-secrets
+            ignoreMissingValueFiles: true
+            valueFiles:
+                - $values/environment/{{ .metadata.labels.environment }}/values/external-secrets.yaml
+                - $values/clusters/{{ .name }}/values/external-secrets.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - RespectIgnoreDifferences=true
+          - ServerSideApply=true

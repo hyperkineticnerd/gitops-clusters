@@ -1,0 +1,144 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: spoke-argocd-repos
+  namespace: openshift-gitops
+  annotations:
+    policy.open-cluster-management.io/categories: ""
+    policy.open-cluster-management.io/controls: ""
+    policy.open-cluster-management.io/description: Ensure the git repo secrets exist
+    policy.open-cluster-management.io/standards: ""
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-secret
+        spec:
+          namespaceSelector:
+            include:
+              - openshift-gitops
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  forceHttpBasicAuth: '{{hub fromSecret "" "repo-openshift-bootstrap" "forceHttpBasicAuth" hub}}'
+                  insecure: '{{hub fromSecret "" "repo-openshift-bootstrap" "insecure" hub}}'
+                  password: '{{hub fromSecret "" "repo-openshift-bootstrap" "pasword" hub}}'
+                  project: '{{hub fromSecret "" "repo-openshift-bootstrap" "project" hub}}'
+                  type: '{{hub fromSecret "" "repo-openshift-bootstrap" "type" hub}}'
+                  url: '{{hub fromSecret "" "repo-openshift-bootstrap" "url" hub}}'
+                  username: '{{hub fromSecret "" "repo-openshift-bootstrap" "username" hub}}'
+                  name: '{{hub fromSecret "" "repo-openshift-bootstrap" "name" hub}}'
+                kind: Secret
+                metadata:
+                  name: repo-openshift-bootstrap
+                  namespace: openshift-gitops
+                  annotations:
+                    managed-by: argocd.argoproj.io
+                  labels:
+                    argocd.argoproj.io/secret-type: repository
+                type: Opaque
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  forceHttpBasicAuth: '{{hub fromSecret "" "repo-openshift-cluster-values" "forceHttpBasicAuth" hub}}'
+                  insecure: '{{hub fromSecret "" "repo-openshift-cluster-values" "insecure" hub}}'
+                  password: '{{hub fromSecret "" "repo-openshift-cluster-values" "pasword" hub}}'
+                  project: '{{hub fromSecret "" "repo-openshift-cluster-values" "project" hub}}'
+                  type: '{{hub fromSecret "" "repo-openshift-cluster-values" "type" hub}}'
+                  url: '{{hub fromSecret "" "repo-openshift-cluster-values" "url" hub}}'
+                  username: '{{hub fromSecret "" "repo-openshift-cluster-values" "username" hub}}'
+                  name: '{{hub fromSecret "" "repo-openshift-cluster-values" "name" hub}}'
+                kind: Secret
+                metadata:
+                  name: repo-openshift-cluster-values
+                  namespace: openshift-gitops
+                  annotations:
+                    managed-by: argocd.argoproj.io
+                  labels:
+                    argocd.argoproj.io/secret-type: repository
+                type: Opaque
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  forceHttpBasicAuth: '{{hub fromSecret "" "repo-openshift-management" "forceHttpBasicAuth" hub}}'
+                  insecure: '{{hub fromSecret "" "repo-openshift-management" "insecure" hub}}'
+                  password: '{{hub fromSecret "" "repo-openshift-management" "pasword" hub}}'
+                  project: '{{hub fromSecret "" "repo-openshift-management" "project" hub}}'
+                  type: '{{hub fromSecret "" "repo-openshift-management" "type" hub}}'
+                  url: '{{hub fromSecret "" "repo-openshift-management" "url" hub}}'
+                  username: '{{hub fromSecret "" "repo-openshift-management" "username" hub}}'
+                  name: '{{hub fromSecret "" "repo-openshift-management" "name" hub}}'
+                kind: Secret
+                metadata:
+                  name: repo-openshift-management
+                  namespace: openshift-gitops
+                  annotations:
+                    managed-by: argocd.argoproj.io
+                  labels:
+                    argocd.argoproj.io/secret-type: repository
+                type: Opaque
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  forceHttpBasicAuth: '{{hub fromSecret "" "repo-vm-workloads" "forceHttpBasicAuth" hub}}'
+                  password: '{{hub fromSecret "" "repo-vm-workloads" "pasword" hub}}'
+                  type: '{{hub fromSecret "" "repo-vm-workloads" "type" hub}}'
+                  url: '{{hub fromSecret "" "repo-vm-workloads" "url" hub}}'
+                  username: '{{hub fromSecret "" "repo-vm-workloads" "username" hub}}'
+                kind: Secret
+                metadata:
+                  name: repo-vm-workloads
+                  namespace: openshift-gitops
+                  annotations:
+                    managed-by: argocd.argoproj.io
+                  labels:
+                    argocd.argoproj.io/secret-type: repo-creds
+                type: Opaque
+          pruneObjectBehavior: None
+          remediationAction: inform
+          severity: low
+  remediationAction: enforce
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: argocd-repos-placement
+  namespace: openshift-gitops
+spec:
+  clusterSets:
+    - global
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchExpressions:
+            - key: name
+              operator: NotIn
+              values:
+                - local-cluster
+  tolerations:
+    - key: cluster.open-cluster-management.io/unreachable
+      operator: Exists
+    - key: cluster.open-cluster-management.io/unavailable
+      operator: Exists
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: argocd-repos-placement
+  namespace: openshift-gitops
+placementRef:
+  name: argocd-repos-placement
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: spoke-argocd-repos
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy

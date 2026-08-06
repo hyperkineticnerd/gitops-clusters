@@ -1,0 +1,25 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: zammad-scc-privileged
+  namespace: zammad
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: zammad
+  - kind: ServiceAccount
+    name: zammad-postgresql
+    namespace: zammad
+  - kind: ServiceAccount
+    name: zammad-memcached
+    namespace: zammad
+  - kind: ServiceAccount
+    name: zammad-redis-master
+    namespace: zammad
+  - kind: ServiceAccount
+    name: zammad-elasticsearch-master
+    namespace: zammad
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: 'system:openshift:scc:privileged'

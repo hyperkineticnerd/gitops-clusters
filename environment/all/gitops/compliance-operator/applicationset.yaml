@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-compliance-operator
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        values:
+          env: '{{index .metadata.labels "environment"}}'
+          cluster: '{{ .name }}'
+        # selector:
+        #   matchExpressions:
+        #     - key: environment
+        #       operator: In
+        #       values:
+        #         - management
+  template:
+    metadata:
+      name: '{{ .name }}-compliance-operator'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: openshift-compliance
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: olm-operator
+          targetRevision: 0.3.0
+          helm:
+            releaseName: compliance-operator
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/environment/all/values/compliance-operator.yaml
+              - $values/environment/{{ .values.env }}/values/compliance-operator.yaml
+              - $values/clusters/{{ .values.cluster }}/values/compliance-operator.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: clusters/{{ .name }}/extras/nmstate
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true
