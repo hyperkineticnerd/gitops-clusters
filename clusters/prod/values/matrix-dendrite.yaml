@@ -5,6 +5,11 @@ signing_key:
   # -- Use an existing secret
   existingSecret: "my-dendrite-signing-key"
 
+dendrite_config:
+  global:
+    database:
+      connection_string: "postgresql://postgres:5432/dendrite"
+
 ingress:
   # -- Create an ingress for the deployment
   enabled: false
