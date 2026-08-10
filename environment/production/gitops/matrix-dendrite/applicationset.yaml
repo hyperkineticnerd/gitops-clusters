@@ -50,6 +50,11 @@ spec:
       ignoreDifferences:
         - group: Batch
           kind: Job
+        - group: ''
+          kind: Secret
+          name: matrix-dendrite-conf
+          jsonPointers:
+            - /data/dendrite.yaml
 
       syncPolicy:
         automated:
