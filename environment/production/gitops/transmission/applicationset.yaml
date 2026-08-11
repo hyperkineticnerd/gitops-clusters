@@ -32,7 +32,7 @@ spec:
 
         - repoURL: oci://ghcr.io/lexfrei/charts/transmission
           path: .
-          targetRevision: 1.7.2
+          targetRevision: 1.8.0
           helm:
             releaseName: transmission
             ignoreMissingValueFiles: true
