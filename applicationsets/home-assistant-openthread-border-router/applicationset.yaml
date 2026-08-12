@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-home-assistant-otbr
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            environment: management
+  template:
+    metadata:
+      name: '{{ .name }}-home-assistant-otbr'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: home-assistant
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/home-assistant-openthread-border-router
+          ref: values
+
+        - repoURL: https://charts.derwitt.dev
+          chart: otbr
+          targetRevision: 0.1.0  # For Helm, this refers to the chart version.
+          helm:
+            releaseName: otbr
+            values: |
+              fullnameOverride: otbr
+              nameOverride: otbr
+
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .name }}/values/home-assistant-openthread-border-router.yaml
+
+      syncPolicy:
+        managedNamespaceMetadata:
+          annotations:
+            k8s.ovn.org/multicast-enabled: 'true'
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

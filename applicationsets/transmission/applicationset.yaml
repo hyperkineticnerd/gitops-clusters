@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-transmission
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-transmission'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: arr-downloaders  # transmission
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/transmission
+          ref: values
+
+        - repoURL: oci://ghcr.io/lexfrei/charts/transmission
+          path: .
+          targetRevision: 1.8.0
+          helm:
+            releaseName: transmission
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/transmission.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+          - CreateNamespace=true

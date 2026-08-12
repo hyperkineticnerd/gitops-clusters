@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-jellyfin
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-jellyfin'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: jellyfin
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/jellyfin
+          ref: values
+
+        - repoURL: https://charts.hknlab.io
+          chart: jellyfin
+          targetRevision: 0.2.3
+          helm:
+            releaseName: jellyfin
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/environment/{{ .metadata.labels.environment }}/values/jellyfin.yaml
+              - $values/clusters/{{ .name }}/values/jellyfin.yaml
+
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true

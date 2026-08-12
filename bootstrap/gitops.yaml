@@ -12,11 +12,23 @@ spec:
     - git:
         repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
         revision: HEAD
-        files:
-          - path: environment/**/bootstrap.yaml
+        directories:
+          - path: applicationset/*
+          - path: applicationset/rhacs
+            exclude: true
+          - path: applicationset/rhacs-secured-cluster
+            exclude: true
+          - path: applicationset/rhacs-config
+            exclude: true
+          - path: applicationset/home-assistant-openthread-border-router
+            exclude: true
+          - path: applicationset/readarr
+            exclude: true
+          - path: applicationset/redirecterr
+            exclude: true
   template:
     metadata:
-      name: 'bootstrap-environment-{{ .path.basenameNormalized }}'
+      name: 'bootstrap-{{ .path.basenameNormalized }}'
     spec:
       project: bootstrap
 

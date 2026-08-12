@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-readarr
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-readarr'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: arr-collectors
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: readarr
+          targetRevision: 0.1.1
+          helm:
+            releaseName: readarr
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/readarr.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/readarr
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

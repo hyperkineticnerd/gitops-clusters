@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-hosted-clusters
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+        revision: HEAD
+        files:
+          - path: clusters/**/values/hosted-control-planes.yaml
+        values:
+          cluster: '{{ index .path.segments 1 }}'
+  template:
+    metadata:
+      name: 'hosted-cluster-{{ .values.cluster }}'
+    spec:
+      project: hosted-clusters
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: clusters
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: 'clusters/{{ .values.cluster }}/extras/hosted-control-planes'
+          ref: values
+
+        - repoURL: https://charts.hknlab.io
+          chart: hosted-control-planes-metallb
+          targetRevision: 0.1.6
+          helm:
+            releaseName: '{{ .values.cluster }}'
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .values.cluster }}/values/hosted-control-planes.yaml
+
+        - repoURL: https://charts.hknlab.io
+          chart: hosted-control-planes
+          targetRevision: 0.1.9
+          helm:
+            releaseName: '{{ .values.cluster }}'
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .values.cluster }}/values/hosted-control-planes.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+          - CreateNamespace=true

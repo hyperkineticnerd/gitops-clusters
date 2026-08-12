@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-element-web
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-element-web'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: element-web
+
+      sources:
+        - repoURL: https://gitlab.com/ananace/charts.git
+          path: charts/element-web
+          targetRevision: HEAD
+
+          helm:
+            releaseName: element-web
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/element-web.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/element-web
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true
+
+      ignoreDifferences:
+        - group: Batch
+          kind: Job

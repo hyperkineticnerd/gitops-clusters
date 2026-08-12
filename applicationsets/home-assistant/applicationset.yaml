@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-home-assistant
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            environment: management
+  template:
+    metadata:
+      name: '{{ .name }}-home-assistant'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: home-assistant
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/home-assistant
+          ref: values
+
+        - repoURL: http://pajikos.github.io/home-assistant-helm-chart/
+          chart: home-assistant
+          targetRevision: 0.3.27  # For Helm, this refers to the chart version.
+          helm:
+            releaseName: home-assistant
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{ .name }}/values/home-assistant.yaml
+
+      syncPolicy:
+        managedNamespaceMetadata:
+          annotations:
+            k8s.ovn.org/multicast-enabled: 'true'
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

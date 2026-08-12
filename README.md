@@ -2,7 +2,7 @@
 
 ## Entrypoint
 
-The main gitops entrypoint is `/gitops/bootstrap.yaml`. The bootstrap ApplicationSet polls the different environments (in Git)
+The main gitops entrypoint is `/bootstrap/gitops.yaml`. The bootstrap ApplicationSet polls the `applicationsets/` directory in Git
 for additional ApplicationSets to deploy. Most of the ApplicationSets targets a specific environment and clusters labeled with
 those environments.
 

@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-configarr
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - production
+  template:
+    metadata:
+      name: '{{ .name }}-configarr'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: arr-management
+
+      sources:
+        - repoURL: https://charts.hknlab.io
+          chart: configarr
+          targetRevision: 0.1.2
+          helm:
+            releaseName: configarr
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/clusters/{{.name}}/values/configarr.yaml
+
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{.name}}/extras/configarr
+          ref: values
+
+      syncPolicy:
+        automated:
+          prune: false
+        syncOptions:
+        - CreateNamespace=true

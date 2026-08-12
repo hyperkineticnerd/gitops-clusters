@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-openshift-ingress-config
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - key: apps.open-cluster-management.io/acm-cluster
+              operator: In
+              values:
+                - "true"
+  template:
+    metadata:
+      name: '{{ .name }}-openshift-ingress-config'
+    spec:
+      project: '{{ .name }}'
+
+      destination:
+        server: '{{ .server }}'
+        namespace: openshift-ingress
+
+      sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: clusters/{{ .name }}/extras/openshift-ingress-config
+          ref: values
+
+        - repoURL: https://charts.hknlab.io
+          chart: openshift-ingress-config
+          targetRevision: 0.1.2
+          helm:
+            releaseName: openshift-ingress-config
+            ignoreMissingValueFiles: true
+            valueFiles:
+                - $values/environment/{{ .metadata.labels.environment }}/values/openshift-ingress-config.yaml
+                - $values/clusters/{{ .name }}/values/openshift-ingress-config.yaml
+
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - RespectIgnoreDifferences=true
+          - ServerSideApply=true
