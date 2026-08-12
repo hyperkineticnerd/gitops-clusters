@@ -13,18 +13,18 @@ spec:
         repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
         revision: HEAD
         directories:
-          - path: applicationset/*
-          - path: applicationset/rhacs
+          - path: applicationsets/*
+          - path: applicationsets/rhacs
             exclude: true
-          - path: applicationset/rhacs-secured-cluster
+          - path: applicationsets/rhacs-secured-cluster
             exclude: true
-          - path: applicationset/rhacs-config
+          - path: applicationsets/rhacs-config
             exclude: true
-          - path: applicationset/home-assistant-openthread-border-router
+          - path: applicationsets/home-assistant-openthread-border-router
             exclude: true
-          - path: applicationset/readarr
+          - path: applicationsets/readarr
             exclude: true
-          - path: applicationset/redirecterr
+          - path: applicationsets/redirecterr
             exclude: true
   template:
     metadata:
