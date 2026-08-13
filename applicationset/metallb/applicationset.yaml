@@ -6,6 +6,8 @@ metadata:
   annotations:
       argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
