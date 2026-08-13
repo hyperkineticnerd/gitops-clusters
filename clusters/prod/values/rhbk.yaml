@@ -1,7 +1,7 @@
 
 operator:
   enable: true
-  channel: stable-v26
+  channel: stable-v26.6
   installPlanApproval: Automatic
   name: rhbk-operator
   namespace: keycloak
