@@ -45,7 +45,7 @@ spec:
             releaseName: matrix-dendrite
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .name }}/values/matrix-dendrite.yaml
+              - $values/cluster/{{ .name }}/values/matrix-dendrite.yaml
 
       ignoreDifferences:
         - group: Batch

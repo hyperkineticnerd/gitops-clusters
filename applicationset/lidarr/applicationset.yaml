@@ -32,7 +32,7 @@ spec:
             releaseName: lidarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/lidarr.yaml
+              - $values/cluster/{{.name}}/values/lidarr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

@@ -39,7 +39,7 @@ spec:
             valueFiles:
               - $values/environment/all/values/compliance-operator.yaml
               - $values/environment/{{ .values.env }}/values/compliance-operator.yaml
-              - $values/clusters/{{ .values.cluster }}/values/compliance-operator.yaml
+              - $values/cluster/{{ .values.cluster }}/values/compliance-operator.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

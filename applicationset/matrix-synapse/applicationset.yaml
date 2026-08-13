@@ -37,7 +37,7 @@ spec:
             releaseName: matrix-synapse
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/matrix-synapse.yaml
+              - $values/cluster/{{.name}}/values/matrix-synapse.yaml
 
       syncPolicy:
         automated:

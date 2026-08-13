@@ -32,7 +32,7 @@ spec:
             releaseName: sabnzbd
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/sabnzbd.yaml
+              - $values/cluster/{{.name}}/values/sabnzbd.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

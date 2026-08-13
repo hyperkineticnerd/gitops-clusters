@@ -39,7 +39,7 @@ spec:
             valueFiles:
               - $values/environment/all/values/rhacs.yaml
               - $values/environment/{{ .values.env }}/values/rhacs.yaml
-              - $values/clusters/{{ .values.cluster }}/values/rhacs.yaml
+              - $values/cluster/{{ .values.cluster }}/values/rhacs.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

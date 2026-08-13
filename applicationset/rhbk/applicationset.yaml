@@ -37,7 +37,7 @@ spec:
             releaseName: keycloak
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .name }}/values/rhbk.yaml
+              - $values/cluster/{{ .name }}/values/rhbk.yaml
 
       syncPolicy:
         automated:

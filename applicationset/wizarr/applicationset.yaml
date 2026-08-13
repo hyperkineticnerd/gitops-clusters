@@ -37,7 +37,7 @@ spec:
             releaseName: wizarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/wizarr.yaml
+              - $values/cluster/{{.name}}/values/wizarr.yaml
 
       syncPolicy:
         automated:

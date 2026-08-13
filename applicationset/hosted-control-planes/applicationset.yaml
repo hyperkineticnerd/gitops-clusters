@@ -39,7 +39,7 @@ spec:
             releaseName: '{{ .values.cluster }}'
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .values.cluster }}/values/hosted-control-planes.yaml
+              - $values/cluster/{{ .values.cluster }}/values/hosted-control-planes.yaml
 
         - repoURL: https://charts.hknlab.io
           chart: hosted-control-planes
@@ -48,7 +48,7 @@ spec:
             releaseName: '{{ .values.cluster }}'
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .values.cluster }}/values/hosted-control-planes.yaml
+              - $values/cluster/{{ .values.cluster }}/values/hosted-control-planes.yaml
 
       syncPolicy:
         automated:

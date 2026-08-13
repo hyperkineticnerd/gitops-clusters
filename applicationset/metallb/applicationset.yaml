@@ -44,7 +44,7 @@ spec:
             releaseName: metallb
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/hub/values/bgp.yaml
+              - $values/cluster/hub/values/bgp.yaml
 
         - repoURL: https://charts.hknlab.io
           chart: metallb-loadbalancer
@@ -53,7 +53,7 @@ spec:
             releaseName: metallb
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/hub/values/lb.yaml
+              - $values/cluster/hub/values/lb.yaml
 
       syncPolicy:
         automated:

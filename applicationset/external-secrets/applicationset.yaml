@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
                 - $values/environment/{{ .metadata.labels.environment }}/values/external-secrets.yaml
-                - $values/clusters/{{ .name }}/values/external-secrets.yaml
+                - $values/cluster/{{ .name }}/values/external-secrets.yaml
 
       syncPolicy:
         automated:

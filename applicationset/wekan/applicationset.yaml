@@ -37,7 +37,7 @@ spec:
             releaseName: wekan
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/wekan.yaml
+              - $values/cluster/{{.name}}/values/wekan.yaml
 
       syncPolicy:
         automated:

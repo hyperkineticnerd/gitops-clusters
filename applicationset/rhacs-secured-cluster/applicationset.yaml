@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/environment/{{ .values.env }}/values/rhacs-secured-cluster.yaml
-              - $values/clusters/{{ .values.cluster }}/values/rhacs-secured-cluster.yaml
+              - $values/cluster/{{ .values.cluster }}/values/rhacs-secured-cluster.yaml
             valuesObject:
               clusterName: '{{ .name }}'
 

@@ -32,7 +32,7 @@ spec:
             releaseName: tdarr-server
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/tdarr-server.yaml
+              - $values/cluster/{{.name}}/values/tdarr-server.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

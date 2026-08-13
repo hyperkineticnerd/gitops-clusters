@@ -32,7 +32,7 @@ spec:
             releaseName: redirecterr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/redirecterr.yaml
+              - $values/cluster/{{.name}}/values/redirecterr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

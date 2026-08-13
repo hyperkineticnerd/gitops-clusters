@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               # - $values/environment/{{ .metadata.labels.environment }}/values/cloudflare-tunnel-ingress-controller.yaml
-              - $values/clusters/{{ .name }}/values/cloudflare-tunnel-ingress-controller.yaml
+              - $values/cluster/{{ .name }}/values/cloudflare-tunnel-ingress-controller.yaml
 
       syncPolicy:
         syncOptions:

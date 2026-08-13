@@ -32,7 +32,7 @@ spec:
             releaseName: bazarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/bazarr.yaml
+              - $values/cluster/{{.name}}/values/bazarr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

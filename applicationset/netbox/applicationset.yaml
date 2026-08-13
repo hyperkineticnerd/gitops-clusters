@@ -34,7 +34,7 @@ spec:
             releaseName: netbox
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/hub/values/netbox.yaml
+              - $values/cluster/hub/values/netbox.yaml
 
       syncPolicy:
         automated:

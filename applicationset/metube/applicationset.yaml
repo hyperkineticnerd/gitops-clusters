@@ -32,7 +32,7 @@ spec:
             releaseName: metube
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/metube.yaml
+              - $values/cluster/{{.name}}/values/metube.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

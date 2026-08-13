@@ -32,7 +32,7 @@ spec:
             releaseName: readarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/readarr.yaml
+              - $values/cluster/{{.name}}/values/readarr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

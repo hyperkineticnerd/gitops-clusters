@@ -32,7 +32,7 @@ spec:
             releaseName: configarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/configarr.yaml
+              - $values/cluster/{{.name}}/values/configarr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

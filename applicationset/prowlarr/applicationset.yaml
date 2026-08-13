@@ -32,7 +32,7 @@ spec:
             releaseName: prowlarr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/prowlarr.yaml
+              - $values/cluster/{{.name}}/values/prowlarr.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

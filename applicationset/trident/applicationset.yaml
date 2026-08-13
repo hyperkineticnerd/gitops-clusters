@@ -50,7 +50,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/environment/{{ .values.env }}/values/trident.yaml
-              - $values/clusters/{{ .values.cluster }}/values/trident.yaml
+              - $values/cluster/{{ .values.cluster }}/values/trident.yaml
 
       syncPolicy:
         syncOptions:

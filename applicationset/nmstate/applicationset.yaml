@@ -31,7 +31,7 @@ spec:
             releaseName: nmstate
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/hub/values/nmstate.yaml
+              - $values/cluster/hub/values/nmstate.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

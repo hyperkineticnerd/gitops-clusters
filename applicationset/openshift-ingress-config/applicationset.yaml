@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
                 - $values/environment/{{ .metadata.labels.environment }}/values/openshift-ingress-config.yaml
-                - $values/clusters/{{ .name }}/values/openshift-ingress-config.yaml
+                - $values/cluster/{{ .name }}/values/openshift-ingress-config.yaml
 
       syncPolicy:
         automated:

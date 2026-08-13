@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/environment/{{ .values.env }}/values/hashicorp-vault.yaml
-              - $values/clusters/{{ .values.cluster }}/values/hashicorp-vault.yaml
+              - $values/cluster/{{ .values.cluster }}/values/hashicorp-vault.yaml
 
       syncPolicy:
         syncOptions:

@@ -35,7 +35,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               # - $values/environment/{{ .metadata.labels.environment }}/values/mattermost.yaml
-              - $values/clusters/hub/values/mattermost.yaml
+              - $values/cluster/hub/values/mattermost.yaml
 
       syncPolicy:
         automated:

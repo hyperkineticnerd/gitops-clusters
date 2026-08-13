@@ -34,7 +34,7 @@ spec:
             releaseName: home-assistant
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .name }}/values/home-assistant.yaml
+              - $values/cluster/{{ .name }}/values/home-assistant.yaml
 
       syncPolicy:
         managedNamespaceMetadata:

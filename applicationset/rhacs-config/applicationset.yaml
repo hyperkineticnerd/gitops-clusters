@@ -34,7 +34,7 @@ spec:
             releaseName: rhacs-config
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/hub/values/rhacs-config.yaml
+              - $values/cluster/hub/values/rhacs-config.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

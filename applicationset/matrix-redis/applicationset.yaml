@@ -37,7 +37,7 @@ spec:
             releaseName: redis
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{ .name }}/values/matrix-redis.yaml
+              - $values/cluster/{{ .name }}/values/matrix-redis.yaml
 
       syncPolicy:
         automated:

@@ -32,7 +32,7 @@ spec:
             releaseName: tdarr-node-1
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/tdarr-node.yaml
+              - $values/cluster/{{.name}}/values/tdarr-node.yaml
 
         - repoURL: https://github.com/hyperkineticnerd/helm-charts.git
           path: charts/tdarr-node
@@ -41,7 +41,7 @@ spec:
             releaseName: tdarr-node-2
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/tdarr-node.yaml
+              - $values/cluster/{{.name}}/values/tdarr-node.yaml
 
         - repoURL: https://github.com/hyperkineticnerd/helm-charts.git
           path: charts/tdarr-node
@@ -50,7 +50,7 @@ spec:
             releaseName: tdarr-node-3
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/tdarr-node.yaml
+              - $values/cluster/{{.name}}/values/tdarr-node.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD

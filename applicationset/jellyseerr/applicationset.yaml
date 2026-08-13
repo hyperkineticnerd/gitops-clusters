@@ -37,7 +37,7 @@ spec:
             releaseName: jellyseerr
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/clusters/{{.name}}/values/jellyseerr.yaml
+              - $values/cluster/{{.name}}/values/jellyseerr.yaml
 
       syncPolicy:
         automated:

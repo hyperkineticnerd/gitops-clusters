@@ -38,7 +38,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
                 - $values/environment/{{ .metadata.labels.environment }}/values/cluster-configuration.yaml
-                - $values/clusters/{{ .name }}/values/cluster-configuration.yaml
+                - $values/cluster/{{ .name }}/values/cluster-configuration.yaml
 
       syncPolicy:
         automated:
