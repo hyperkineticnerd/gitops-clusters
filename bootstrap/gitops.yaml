@@ -6,6 +6,9 @@ metadata:
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: false
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -42,5 +45,9 @@ spec:
           path: '{{ .path.path }}'
 
       syncPolicy:
+        automated:
+          enabled: false
+          prune: false
+          selfHeal: false
         syncOptions:
           - CreateNamespace=true

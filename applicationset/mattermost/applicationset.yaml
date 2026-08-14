@@ -11,6 +11,11 @@ spec:
         selector:
           matchLabels:
             environment: management
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   template:
     metadata:
       name: '{{ .name }}-mattermost'
@@ -39,6 +44,8 @@ spec:
 
       syncPolicy:
         automated:
+          enabled: false
           prune: false
+          selfHeal: false
         syncOptions:
           - CreateNamespace=true

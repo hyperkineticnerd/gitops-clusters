@@ -4,8 +4,6 @@ metadata:
   name: gitops-nmstate
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -13,6 +11,11 @@ spec:
         selector:
           matchLabels:
             environment: management
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: '{{ .name }}-nmstate'
@@ -40,6 +43,8 @@ spec:
 
       syncPolicy:
         automated:
+          enabled: false
           prune: false
+          selfHeal: false
         syncOptions:
         - CreateNamespace=true

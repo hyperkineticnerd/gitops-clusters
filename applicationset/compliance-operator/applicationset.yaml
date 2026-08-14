@@ -4,8 +4,6 @@ metadata:
   name: gitops-compliance-operator
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -19,6 +17,11 @@ spec:
         #       operator: In
         #       values:
         #         - management
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   template:
     metadata:
       name: '{{ .name }}-compliance-operator'
@@ -48,6 +51,8 @@ spec:
 
       syncPolicy:
         automated:
+          enabled: false
           prune: false
+          selfHeal: false
         syncOptions:
         - CreateNamespace=true

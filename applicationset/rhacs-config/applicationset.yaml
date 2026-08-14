@@ -4,8 +4,6 @@ metadata:
   name: gitops-rhacs-config
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: false
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -16,6 +14,11 @@ spec:
               operator: In
               values:
                 - management
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: '{{ .name }}-rhacs-config'
@@ -43,6 +46,8 @@ spec:
 
       syncPolicy:
         automated:
+          enabled: false
           prune: false
+          selfHeal: false
         syncOptions:
         - CreateNamespace=true

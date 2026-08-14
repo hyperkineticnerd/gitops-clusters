@@ -11,6 +11,11 @@ spec:
         selector:
           matchLabels:
             environment: management
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   template:
     metadata:
       name: '{{ .name }}-home-assistant-matter-server'
@@ -45,6 +50,8 @@ spec:
           annotations:
             k8s.ovn.org/multicast-enabled: 'true'
         automated:
+          enabled: false
           prune: false
+          selfHeal: false
         syncOptions:
         - CreateNamespace=true

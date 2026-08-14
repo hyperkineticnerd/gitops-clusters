@@ -4,8 +4,6 @@ metadata:
   name: gitops-netapp-trident
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -20,6 +18,11 @@ spec:
         #       operator: In
         #       values:
         #         - Openshift
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: '{{ .name }}-trident'
@@ -53,6 +56,10 @@ spec:
               - $values/cluster/{{ .values.cluster }}/values/trident.yaml
 
       syncPolicy:
+        automated:
+          enabled: false
+          prune: false
+          selfHeal: false
         syncOptions:
           - CreateNamespace=true
           - RespectIgnoreDifferences=true
