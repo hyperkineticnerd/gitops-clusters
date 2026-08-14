@@ -20,7 +20,7 @@ spec:
     - jsonPointers:
         - /spec/syncPolicy
   syncPolicy:
-    preserveResourcesOnDeletion: false
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: '{{ .name }}-nextcloud'
