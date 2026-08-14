@@ -33,7 +33,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/trident
+          path: cluster/{{ .name }}/extras/trident
           ref: values
 
         - repoURL: https://netapp.github.io/trident-helm-chart

@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/rhbk
+          path: cluster/{{ .name }}/extras/rhbk
           ref: values
 
         - repoURL: https://charts.hknlab.io

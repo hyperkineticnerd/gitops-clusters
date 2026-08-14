@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/matrix-redis
+          path: cluster/{{ .name }}/extras/matrix-redis
           ref: values
 
         - repoURL: registry-1.docker.io/bitnamicharts

@@ -54,7 +54,7 @@ spec:
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/tdarr-node
+          path: cluster/{{.name}}/extras/tdarr-node
           ref: values
 
       syncPolicy:

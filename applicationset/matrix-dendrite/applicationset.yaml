@@ -35,7 +35,7 @@ spec:
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/matrix-dendrite
+          path: cluster/{{ .name }}/extras/matrix-dendrite
           ref: values
 
         - repoURL: https://charts.hknlab.io

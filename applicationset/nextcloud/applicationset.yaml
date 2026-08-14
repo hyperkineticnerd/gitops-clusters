@@ -50,7 +50,7 @@ spec:
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/nextcloud
+          path: cluster/{{.name}}/extras/nextcloud
           ref: values
 
       syncPolicy:

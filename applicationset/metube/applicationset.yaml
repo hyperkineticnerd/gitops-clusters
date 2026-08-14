@@ -36,7 +36,7 @@ spec:
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/metube
+          path: cluster/{{.name}}/extras/metube
           ref: values
 
       syncPolicy:

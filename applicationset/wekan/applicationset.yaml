@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/wekan
+          path: cluster/{{.name}}/extras/wekan
           ref: values
 
         - repoURL: https://wekan.github.io/charts

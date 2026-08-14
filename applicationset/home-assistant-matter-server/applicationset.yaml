@@ -24,7 +24,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/home-assistant-matter-server
+          path: cluster/{{ .name }}/extras/home-assistant-matter-server
           ref: values
 
         - repoURL: https://charts.derwitt.dev

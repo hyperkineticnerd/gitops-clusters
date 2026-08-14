@@ -13,7 +13,7 @@ spec:
         repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
         revision: HEAD
         files:
-          - path: clusters/**/values/hosted-control-planes.yaml
+          - path: cluster/**/values/hosted-control-planes.yaml
         values:
           cluster: '{{ index .path.segments 1 }}'
   template:

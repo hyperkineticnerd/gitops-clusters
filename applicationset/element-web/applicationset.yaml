@@ -37,7 +37,7 @@ spec:
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/element-web
+          path: cluster/{{.name}}/extras/element-web
           ref: values
 
       syncPolicy:

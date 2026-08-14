@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/cloudflare-tunnel-ingress-controller
+          path: cluster/{{ .name }}/extras/cloudflare-tunnel-ingress-controller
           ref: values
 
         - repoURL: https://helm.strrl.dev

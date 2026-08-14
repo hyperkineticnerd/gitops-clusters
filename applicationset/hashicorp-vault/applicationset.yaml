@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/hub/extras/hashicorp-vault
+          path: cluster/hub/extras/hashicorp-vault
           ref: values
 
         - repoURL: https://helm.releases.hashicorp.com

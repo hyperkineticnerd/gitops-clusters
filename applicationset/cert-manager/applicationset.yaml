@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{ .name }}/extras/cert-manager
+          path: cluster/{{ .name }}/extras/cert-manager
           ref: values
 
         - repoURL: oci://quay.io/jetstack/charts/cert-manager

@@ -27,7 +27,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: clusters/{{.name}}/extras/matrix-synapse
+          path: cluster/{{.name}}/extras/matrix-synapse
           ref: values
 
         - repoURL: https://gitlab.com/ananace/charts.git
