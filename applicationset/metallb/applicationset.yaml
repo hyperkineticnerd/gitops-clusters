@@ -11,8 +11,11 @@ spec:
   generators:
     - clusters:
         selector:
-          matchLabels:
-            environment: management
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - management
   ignoreApplicationDifferences:
     - jsonPointers:
         - /spec/syncPolicy

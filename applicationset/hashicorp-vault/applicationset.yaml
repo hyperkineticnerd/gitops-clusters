@@ -9,8 +9,11 @@ spec:
   generators:
     - clusters:
         selector:
-          matchLabels:
-            environment: management
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - management
         values:
           env: '{{index .metadata.labels "environment"}}'
           cluster: '{{ .name }}'
