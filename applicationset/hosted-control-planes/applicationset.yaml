@@ -32,7 +32,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: 'clusters/{{ .values.cluster }}/extras/hosted-control-planes'
+          path: cluster/{{ .values.cluster }}/extras/hosted-control-planes
           ref: values
 
         - repoURL: https://charts.hknlab.io
