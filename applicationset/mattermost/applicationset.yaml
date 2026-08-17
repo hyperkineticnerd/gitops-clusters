@@ -42,7 +42,7 @@ spec:
             releaseName: mattermost
             ignoreMissingValueFiles: true
             valueFiles:
-              # - $values/environment/{{ .metadata.labels.environment }}/values/mattermost.yaml
+              # - $values/environment/{{ index .metadata.labels "environment" }}/values/mattermost.yaml
               - $values/cluster/hub/values/mattermost.yaml
 
       syncPolicy:

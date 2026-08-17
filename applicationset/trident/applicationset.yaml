@@ -9,9 +9,9 @@ spec:
   generators:
     - clusters:
         values:
-          env: '{{index .metadata.labels "environment"}}'
-          cluster: '{{.name}}'
-          trident: '{{ .metadata.labels.helmTridentVersion }}'
+          environment: '{{ index .metadata.labels "environment" }}'
+          cluster: '{{ .name }}'
+          tridentVersion: '{{ index .metadata.labels "helmTridentVersion" }}'
         # selector:
         #   matchExpressions:
         #     - key: vendor
@@ -41,7 +41,7 @@ spec:
 
         - repoURL: https://netapp.github.io/trident-helm-chart
           chart: trident-operator
-          targetRevision: '{{ .values.trident }}'  # 100.2602.0
+          targetRevision: '{{ .values.tridentVersion }}'  # 100.2602.0
           helm:
             releaseName: trident
 
@@ -52,8 +52,8 @@ spec:
             releaseName: trident-config
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/environment/{{ .values.env }}/values/trident.yaml
-              - $values/cluster/{{ .values.cluster }}/values/trident.yaml
+              - $values/environment/{{ index .metadata.labels "environment" }}/values/trident.yaml
+              - $values/cluster/{{ .name }}/values/trident.yaml
 
       syncPolicy:
         automated:

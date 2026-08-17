@@ -7,7 +7,9 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    - clusters: {}
+    - clusters:
+        values:
+          env: '{{ index .metadata.labels "environment" }}'
         # selector:
         #   matchExpressions:
         #     - key: vendor

@@ -42,7 +42,7 @@ spec:
             releaseName: jellyfin
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/environment/{{ .metadata.labels.environment }}/values/jellyfin.yaml
+              - $values/environment/{{ index .metadata.labels "environment" }}/values/jellyfin.yaml
               - $values/cluster/{{ .name }}/values/jellyfin.yaml
 
       syncPolicy:

@@ -7,7 +7,9 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    - clusters: {}
+    - clusters:
+        values:
+          env: '{{ index .metadata.labels "environment" }}'
         # selector:
         #   matchExpressions:
         #     - key: vendor
@@ -23,7 +25,7 @@ spec:
     metadata:
       name: '{{ .name }}-cluster-configuration'
     spec:
-      project: '{{.name}}'
+      project: '{{ .name }}'
 
       destination:
         server: '{{ .server }}'
@@ -32,7 +34,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          # path: cluster/{{.name}}/extras/openshift-configuration
+          # path: cluster/{{ .name }}/extras/openshift-configuration
           ref: values
 
         - repoURL: https://charts.hknlab.io
@@ -42,7 +44,7 @@ spec:
             releaseName: '{{ .name }}'
             ignoreMissingValueFiles: true
             valueFiles:
-                - $values/environment/{{ .metadata.labels.environment }}/values/cluster-configuration.yaml
+                - $values/environment/{{ .values.env }}/values/cluster-configuration.yaml
                 - $values/cluster/{{ .name }}/values/cluster-configuration.yaml
 
       syncPolicy:

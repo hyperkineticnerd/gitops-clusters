@@ -42,7 +42,7 @@ spec:
             releaseName: cloudflare-tunnel-ingress-controller
             ignoreMissingValueFiles: true
             valueFiles:
-              # - $values/environment/{{ .metadata.labels.environment }}/values/cloudflare-tunnel-ingress-controller.yaml
+              # - $values/environment/{{ index .metadata.labels "environment" }}/values/cloudflare-tunnel-ingress-controller.yaml
               - $values/cluster/{{ .name }}/values/cloudflare-tunnel-ingress-controller.yaml
 
       syncPolicy:
