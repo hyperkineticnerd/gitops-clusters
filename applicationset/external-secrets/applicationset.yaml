@@ -7,6 +7,12 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
+    # - list:
+    #     elements:
+    #       - name: hub
+    #         server: https://kubernetes.default.svc
+    #         values:
+    #           env: management
     - clusters:
         values:
           env: '{{ index .metadata.labels "environment" }}'
@@ -21,11 +27,12 @@ spec:
         - /spec/syncPolicy
   syncPolicy:
     preserveResourcesOnDeletion: true
+
   template:
     metadata:
       name: '{{ .name }}-external-secrets'
     spec:
-      project: '{{.name}}'
+      project: '{{ .name }}'
 
       destination:
         server: '{{ .server }}'
@@ -34,7 +41,7 @@ spec:
       sources:
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
-          path: cluster/{{.name}}/extras/external-secrets
+          path: cluster/{{ .name }}/extras/external-secrets
           ref: values
 
         - repoURL: https://charts.external-secrets.io
