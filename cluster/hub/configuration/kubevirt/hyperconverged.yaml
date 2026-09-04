@@ -1,0 +1,55 @@
+apiVersion: hco.kubevirt.io/v1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+  annotations:
+    deployOVS: "false"
+  labels:
+    app: kubevirt-hyperconverged
+spec:
+  deployment:
+    applicationAwareConfig:
+      enable: false
+      vmiCalcConfigName: DedicatedVirtualResources
+    deployVmConsoleProxy: false
+    uninstallStrategy: BlockUninstallIfWorkloadsExist
+  featureGates:
+  - name: disableMDevConfiguration
+  - name: decentralizedLiveMigration
+    state: Disabled
+  security:
+    certConfig:
+      ca:
+        duration: 48h0m0s
+        renewBefore: 24h0m0s
+      server:
+        duration: 24h0m0s
+        renewBefore: 12h0m0s
+  virtualization:
+    evictionStrategy: LiveMigrate
+    higherWorkloadDensity:
+      memoryOvercommitPercentage: 100
+    liveMigrationConfig:
+      allowAutoConverge: false
+      allowPostCopy: false
+      completionTimeoutPerGiB: 150
+      parallelMigrationsPerCluster: 5
+      parallelOutboundMigrationsPerNode: 2
+      progressTimeout: 150
+    permittedHostDevices:
+      pciHostDevices:
+      - externalResourceProvider: true
+        pciDeviceSelector: 10DE:1BB3
+        resourceName: nvidia.com/GP104GL_TESLA_P4
+    virtualMachineOptions:
+      disableFreePageReporting: false
+      disableSerialConsoleLog: true
+    vmiCPUAllocationRatio: 10
+    workloadUpdateStrategy:
+      batchEvictionInterval: 1m0s
+      batchEvictionSize: 10
+      workloadUpdateMethods:
+      - LiveMigrate
+  workloadSources:
+    enableCommonBootImageImport: true

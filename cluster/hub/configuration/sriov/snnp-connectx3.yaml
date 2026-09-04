@@ -1,0 +1,19 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: mellanox-connectx-3pro-policy
+  namespace: sriov-network-operator
+spec:
+  deviceType: netdevice
+  nicSelector:
+    vendor: "15b3"      # Mellanox Technologies
+    deviceID: "1007"    # ConnectX-3 Pro 40 GbE Dual Port QSFP+ Adapter
+    pfName: 
+      - "enp175s0"  # Physical function name
+      - "enp175s0d1"
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+    feature.node.kubernetes.io/pci-15b3.present: "true"
+  numVfs: 4
+  resourceName: mellanox_sriov_netdevice
+  priority: 10
