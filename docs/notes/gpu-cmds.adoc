@@ -1,0 +1,7 @@
+oc get node --selector=nvidia.com/gpu.present -ojson | jq '.items[0].metadata.labels'  | grep nvidia
+
+oc exec -it nvidia-driver-daemonset-9.8.20260727-0-2cmtx -c nvidia-driver-ctr -- nvidia-smi -q
+
+oc label --overwrite node --selector=nvidia.com/gpu.product=Tesla-P4 nvidia.com/device-plugin.config=Tesla-P4
+
+oc get node master-0 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'

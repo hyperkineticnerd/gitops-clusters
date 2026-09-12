@@ -1,0 +1,29 @@
+# ArgoCD
+
+. Cluster Provisioning
+.. AppProject -- preSync -50
+.. Namespace -- preSync -50
+.. External Secrets -- preSync -40
+.. clusterdeployment -- preSync -30
+.. klusterletaddonconfig -- preSync -30
+.. managedcluster -- preSync -30
+.. machinepool -- presync -30
+
+. external secret -- sync -70
+. cert-updater -- sync -70
+. ldap-sync -- sync -70
+
+. Local Storage
+.. Namespace -- sync -50
+.. Operator -- sync -50
+. ODF
+.. Namespace -- sync -50
+.. Operator -- sync -50
+.. configuration -- sync -40
+
+. logging -- sync -30
+. etcd-backup -- sync -30
+
+. rhacs -- sync -20
+. compliance-operator -- sync -20
+

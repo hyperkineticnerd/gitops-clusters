@@ -3,12 +3,10 @@ kind: MachineConfig
 metadata:
   labels:
     machineconfiguration.openshift.io/role: worker
-  name: 100-worker-iommu
+  name: 100-worker-blacklist-nouveau
 spec:
   config:
     ignition:
       version: 3.5.0
   kernelArguments:
-      - intel_iommu=on
-      # If you are using AMD CPU, include the following argument:
-      # - amd_iommu=on
+    - modprobe.blacklist=nouveau

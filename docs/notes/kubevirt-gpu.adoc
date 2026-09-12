@@ -1,0 +1,4 @@
+[source,bash]
+-----
+oc get node master-0 -o json | jq '.status.allocatable,.status.capacity | with_entries(select( .key | startswith("nvidia.com/") ))'
+-----

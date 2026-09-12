@@ -18,7 +18,9 @@ patch:
 
 nodePool:
   - name: dev-workers
-    replicas: 7
+    replicas: 3
+  - name: dev-storage
+    replicas: 1
 
 clusterSet:
   enabled: true

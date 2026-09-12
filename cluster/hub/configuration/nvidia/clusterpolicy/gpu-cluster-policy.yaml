@@ -1,0 +1,61 @@
+apiVersion: nvidia.com/v1
+kind: ClusterPolicy
+metadata:
+  name: gpu-cluster-policy
+spec:
+  daemonsets:
+    rollingUpdate:
+      maxUnavailable: "1"
+    updateStrategy: RollingUpdate
+  dcgm:
+    enabled: true
+  dcgmExporter:
+    config:
+      name: ""
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  devicePlugin:
+    config:
+      default: ""
+      name: ""
+    enabled: true
+    mps:
+      root: /run/nvidia/mps
+  driver:
+    certConfig:
+      name: ""
+    enabled: true
+    image: driver
+    kernelModuleType: auto
+    repository: nvcr.io/nvidia
+    useNvidiaDriverCRD: false
+    useOpenKernelModules: false
+    version: 580.173.02
+  gfd:
+    enabled: true
+  mig:
+    strategy: mixed
+  migManager:
+    enabled: true
+  nodeStatusExporter:
+    enabled: true
+  operator:
+    defaultRuntime: crio
+    initContainer: {}
+    runtimeClass: nvidia
+    use_ocp_driver_toolkit: true
+  sandboxDevicePlugin:
+    enabled: true
+  sandboxWorkloads:
+    defaultWorkload: vm-passthrough
+    enabled: true
+    mode: kubevirt
+  toolkit:
+    enabled: true
+  vfioManager:
+    enabled: true
+  vgpuDeviceManager:
+    enabled: false
+  vgpuManager:
+    enabled: true

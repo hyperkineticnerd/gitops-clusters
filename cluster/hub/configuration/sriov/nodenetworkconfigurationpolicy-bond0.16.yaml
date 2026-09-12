@@ -1,0 +1,17 @@
+﻿apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: bond0.16
+spec:
+  desiredState:
+    interfaces:
+      - description: vlan 16 using bond0
+        ipv4:
+          dhcp: false
+          enabled: false
+        name: bond0.16
+        state: up
+        type: vlan
+        vlan:
+          base-iface: bond0
+          id: 16

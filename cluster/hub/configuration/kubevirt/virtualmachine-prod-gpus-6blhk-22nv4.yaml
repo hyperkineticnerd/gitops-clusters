@@ -1,0 +1,130 @@
+﻿apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: prod-gpus-6blhk-22nv4
+  namespace: clusters-prod
+  labels:
+    capk.cluster.x-k8s.io/kubevirt-machine-name: prod-gpus-6blhk-22nv4
+    capk.cluster.x-k8s.io/kubevirt-machine-namespace: clusters-prod
+    cluster.x-k8s.io/cluster-name: prod
+    cluster.x-k8s.io/role: worker
+    hypershift.openshift.io/infra-id: prod
+    hypershift.openshift.io/nodepool-name: prod-gpus
+    kubevirt.io/vm: prod-gpus-6blhk-22nv4
+    name: prod-gpus-6blhk-22nv4
+spec:
+  dataVolumeTemplates:
+    - metadata:
+        labels:
+          hypershift.openshift.io/is-kubevirt-rhcos: 'true'
+        name: prod-gpus-6blhk-22nv4-rhcos
+      spec:
+        source:
+          registry:
+            pullMethod: node
+            url: 'docker://quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2576502838e6025b6aed388a39e72df9be49c84db8c082e49565bbf1b90bf9fa'
+        storage:
+          resources:
+            requests:
+              storage: 120Gi
+  runStrategy: Always
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes: 'private,public,sockets,virt-bin-share-dir,libvirt-runtime,ephemeral-disks,container-disks,hotplug-disks'
+        kubevirt.io/allow-pod-bridge-network-live-migration: ''
+        kubevirt.io/pci-topology-version: v3
+      labels:
+        capk.cluster.x-k8s.io/kubevirt-machine-name: prod-gpus-6blhk-22nv4
+        capk.cluster.x-k8s.io/kubevirt-machine-namespace: clusters-prod
+        cluster.x-k8s.io/cluster-name: prod
+        cluster.x-k8s.io/role: worker
+        hypershift.openshift.io/infra-id: prod
+        hypershift.openshift.io/nodepool-name: prod-gpus
+        kubevirt.io/vm: prod-gpus-6blhk-22nv4
+        name: prod-gpus-6blhk-22nv4
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 4
+        devices:
+          gpus:
+            - deviceName: nvidia.com/gpu
+              name: gpu1
+          disks:
+            - disk:
+                bus: virtio
+              name: rhcos
+            - disk:
+                bus: virtio
+              name: cloudinitvolume
+          # hostDevices:
+          #   - deviceName: nvidia.com/GP104GL_TESLA_P4
+          #     name: hostdevice-1
+          interfaces:
+            - bridge: {}
+              name: default
+          networkInterfaceMultiqueue: true
+        firmware:
+          serial: a4a6e4de-0c23-4980-9e6a-ff3ceed07ce8
+          uuid: 10f4a1ee-2060-4a93-80bd-984979b616f5
+        machine:
+          type: pc-q35-rhel9.6.0
+        memory:
+          guest: 16Gi
+        resources: {}
+      evictionStrategy: External
+      networks:
+        - name: default
+          pod: {}
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              hypershift.openshift.io/nodepool-name: prod-gpus
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - dataVolume:
+            name: prod-gpus-6blhk-22nv4-rhcos
+          name: rhcos
+        - cloudInitConfigDrive:
+            secretRef:
+              name: user-data-prod-gpus-f4fb36d9-userdata
+          name: cloudinitvolume
+status:
+  conditions:
+    - lastProbeTime: '2026-09-08T03:58:45Z'
+      lastTransitionTime: '2026-09-08T03:58:45Z'
+      message: Guest VM is not reported as running
+      reason: GuestNotRunning
+      status: 'False'
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      message: All of the VMI's DVs are bound and ready
+      reason: AllDVsReady
+      status: 'True'
+      type: DataVolumesReady
+    - lastProbeTime: null
+      lastTransitionTime: '2026-09-08T03:58:45Z'
+      message: '0/1 nodes are available: 1 Insufficient nvidia.com/GP104GL_TESLA_P4. no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.'
+      reason: Unschedulable
+      status: 'False'
+      type: PodScheduled
+  created: true
+  desiredGeneration: 41
+  observedGeneration: 41
+  printableStatus: ErrorUnschedulable
+  runStrategy: Always
+  startFailure:
+    consecutiveFailCount: 1
+    lastFailedVMIUID: 0fdd013d-4d4d-4bb2-bbcd-ba476e6d40e5
+    retryAfterTimestamp: '2026-09-08T03:58:45Z'
+  volumeSnapshotStatuses:
+    - enabled: true
+      name: rhcos
+    - enabled: false
+      name: cloudinitvolume
+      reason: 'Snapshot is not supported for this volumeSource type [cloudinitvolume]'
