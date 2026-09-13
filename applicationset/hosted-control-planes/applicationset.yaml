@@ -46,7 +46,7 @@ spec:
 
         - repoURL: https://charts.hknlab.io
           chart: hosted-control-planes
-          targetRevision: 0.1.9
+          targetRevision: 0.1.10
           helm:
             releaseName: '{{ .values.cluster }}'
             ignoreMissingValueFiles: true
