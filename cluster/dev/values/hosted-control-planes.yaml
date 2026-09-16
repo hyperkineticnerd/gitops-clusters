@@ -20,7 +20,7 @@ nodePool:
   - name: dev-workers
     replicas: 3
   - name: dev-storage
-    replicas: 1
+    replicas: 3
     nodeLabels:
       cluster.ocs.openshift.io/openshift-storage: ''
       node-role.kubernetes.io/infra: ''
