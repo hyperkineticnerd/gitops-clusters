@@ -15,8 +15,8 @@ spec:
               values:
                 - production
   ignoreApplicationDifferences:
-    - jsonPointers:
-        - /spec/syncPolicy
+    - jqPathExpressions:
+        - .spec.syncPolicy
   syncPolicy:
     preserveResourcesOnDeletion: true
   template:
@@ -55,11 +55,11 @@ spec:
       ignoreDifferences:
         - group: batch
           kind: Job
-          jsonPointers:
-            - /spec/template/metadata/labels # Example: ignore changes to labels in job template
-            - /status # Ignore changes to the Job's status field
+          jqPathExpressions:
+            - .spec.template.metadata.labels # Example: ignore changes to labels in job template
+            - .status # Ignore changes to the Job's status field
         - group: batch
           kind: Job
           name: zammad-init # Ignore differences for a specific Job by name
-          jsonPointers:
-            - /spec/template/spec/containers/0/image # Example: ignore image changes for a specific container in a job
+          jqPathExpressions:
+            - .spec.template.spec.containers[]? | .image # Example: ignore image changes for a specific container in a job

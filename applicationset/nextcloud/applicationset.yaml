@@ -17,8 +17,8 @@ spec:
               values:
                 - production
   ignoreApplicationDifferences:
-    - jsonPointers:
-        - /spec/syncPolicy
+    - jqPathExpressions:
+        - .spec.syncPolicy
   syncPolicy:
     preserveResourcesOnDeletion: true
   template:

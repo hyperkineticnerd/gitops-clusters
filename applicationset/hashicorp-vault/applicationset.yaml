@@ -18,8 +18,8 @@ spec:
           env: '{{index .metadata.labels "environment"}}'
           cluster: '{{ .name }}'
   ignoreApplicationDifferences:
-    - jsonPointers:
-        - /spec/syncPolicy
+    - jqPathExpressions:
+        - .spec.syncPolicy
   syncPolicy:
     preserveResourcesOnDeletion: true
   template:

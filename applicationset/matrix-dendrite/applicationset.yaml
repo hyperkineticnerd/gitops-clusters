@@ -15,8 +15,8 @@ spec:
               values:
                 - production
   ignoreApplicationDifferences:
-    - jsonPointers:
-        - /spec/syncPolicy
+    - jqPathExpressions:
+        - .spec.syncPolicy
   syncPolicy:
     preserveResourcesOnDeletion: true
   template:
@@ -58,8 +58,8 @@ spec:
         - group: ''
           kind: Secret
           name: matrix-dendrite-conf
-          jsonPointers:
-            - /data/dendrite.yaml
+          jqPathExpressions:
+            - .data | select(contains("dendrite.yaml"))
 
       syncPolicy:
         automated:
