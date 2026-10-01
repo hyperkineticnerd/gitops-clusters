@@ -18,7 +18,7 @@ patch:
 
 nodePool:
   - name: dev-workers
-    replicas: 3
+    replicas: 5
   - name: dev-storage
     replicas: 3
     nodeLabels:
