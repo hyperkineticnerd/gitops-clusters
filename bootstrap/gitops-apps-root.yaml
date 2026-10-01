@@ -4,11 +4,6 @@ metadata:
   name: bootstrap-gitops
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    preserveResourcesOnDeletion: false
-  ignoreApplicationDifferences:
-    - jqPathExpressions:
-        - .spec.syncPolicy
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
@@ -18,17 +13,22 @@ spec:
         directories:
           - path: applicationset/*
           - path: applicationset/rhacs
-            exclude: true
+            exclude: false
           - path: applicationset/rhacs-secured-cluster
-            exclude: true
+            exclude: false
           - path: applicationset/rhacs-config
-            exclude: true
+            exclude: false
           - path: applicationset/home-assistant-openthread-border-router
             exclude: true
           - path: applicationset/readarr
             exclude: true
           - path: applicationset/redirecterr
             exclude: true
+  ignoreApplicationDifferences:
+    - jqPathExpressions:
+        - .spec.syncPolicy
+  syncPolicy:
+    preserveResourcesOnDeletion: false
   template:
     metadata:
       name: 'bootstrap-{{ .path.basenameNormalized }}'

@@ -8,15 +8,16 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - dev
+                - test
+                - prod
         values:
           env: '{{index .metadata.labels "environment"}}'
-          cluster: '{{ .name }}'
-        # selector:
-        #   matchExpressions:
-        #     - key: vendor
-        #       operator: In
-        #       values:
-        #         - Openshift
   ignoreApplicationDifferences:
     - jqPathExpressions:
         - .spec.syncPolicy
@@ -41,7 +42,7 @@ spec:
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/environment/{{ .values.env }}/values/rhacs-secured-cluster.yaml
-              - $values/cluster/{{ .values.cluster }}/values/rhacs-secured-cluster.yaml
+              - $values/cluster/{{ .name }}/values/rhacs-secured-cluster.yaml
             valuesObject:
               clusterName: '{{ .name }}'
 

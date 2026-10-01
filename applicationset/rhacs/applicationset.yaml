@@ -8,15 +8,17 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - clusters:
+        selector:
+          matchExpressions:
+            - key: environment
+              operator: In
+              values:
+                - management
+                - dev
+                - test
+                - prod
         values:
           env: '{{index .metadata.labels "environment"}}'
-          cluster: '{{ .name }}'
-        # selector:
-        #   matchExpressions:
-        #     - key: environment
-        #       operator: In
-        #       values:
-        #         - management
   ignoreApplicationDifferences:
     - jqPathExpressions:
         - .spec.syncPolicy
@@ -42,7 +44,7 @@ spec:
             valueFiles:
               - $values/environment/all/values/rhacs.yaml
               - $values/environment/{{ .values.env }}/values/rhacs.yaml
-              - $values/cluster/{{ .values.cluster }}/values/rhacs.yaml
+              - $values/cluster/{{ .name }}/values/rhacs.yaml
 
         - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
           targetRevision: HEAD
