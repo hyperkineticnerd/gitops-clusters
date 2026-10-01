@@ -58,8 +58,8 @@ spec:
         - group: ''
           kind: Secret
           name: matrix-dendrite-conf
-          jqPathExpressions:
-            - .data | select("dendrite.yaml")
+          # jqPathExpressions:
+          #   - .data | select("dendrite.yaml")
 
       syncPolicy:
         automated:
