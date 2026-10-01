@@ -59,7 +59,7 @@ spec:
           kind: Secret
           name: matrix-dendrite-conf
           jqPathExpressions:
-            - .data | select(contains("dendrite.yaml"))
+            - .data | select("dendrite.yaml")
 
       syncPolicy:
         automated:
