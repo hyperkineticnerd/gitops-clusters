@@ -60,3 +60,8 @@ spec:
           name: matrix-synapse
           jqPathExpressions:
             - .data."config.yaml"
+        - group: Apps
+          kind: Deployment
+          name: matrix-synapse
+          jqPathExpressions:
+            - .spec.template.metadata.annotations
