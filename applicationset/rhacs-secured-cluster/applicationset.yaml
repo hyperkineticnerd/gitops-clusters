@@ -13,9 +13,9 @@ spec:
             - key: environment
               operator: In
               values:
-                - dev
+                - development
                 - test
-                - prod
+                - production
         values:
           env: '{{index .metadata.labels "environment"}}'
   ignoreApplicationDifferences:
