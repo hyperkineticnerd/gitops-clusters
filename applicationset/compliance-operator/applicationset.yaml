@@ -33,21 +33,22 @@ spec:
         namespace: openshift-compliance
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: olm-operator
-          targetRevision: 0.3.0
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: cluster/{{ .name }}/extras/nmstate
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/olm-operator
+          # chart: olm-operator
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: compliance-operator
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/environment/all/values/compliance-operator.yaml
               - $values/environment/{{ .values.env }}/values/compliance-operator.yaml
-              - $values/cluster/{{ .values.cluster }}/values/compliance-operator.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          # path: cluster/{{ .name }}/extras/nmstate
-          ref: values
+              - $values/cluster/{{ .name }}/values/compliance-operator.yaml
 
       syncPolicy:
         automated:

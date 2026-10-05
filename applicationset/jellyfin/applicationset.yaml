@@ -35,9 +35,10 @@ spec:
           path: cluster/{{ .name }}/extras/jellyfin
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: jellyfin
-          targetRevision: 0.2.3
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/jellyfin
+          # chart: jellyfin
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: jellyfin
             ignoreMissingValueFiles: true

@@ -30,19 +30,20 @@ spec:
         namespace: arr-collectors
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: bazarr
-          targetRevision: 0.1.2
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/bazarr
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/bazarr
+          # chart: bazarr
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: bazarr
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/bazarr.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/bazarr
-          ref: values
 
       syncPolicy:
         automated:
