@@ -30,9 +30,10 @@ spec:
         namespace: stackrox
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: rhacs-config
-          targetRevision: 0.2.2
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config
+          # chart: rhacs-config
+          path: .
+          targetRevision: 0.8.1
           helm:
             releaseName: rhacs-config
             ignoreMissingValueFiles: true
