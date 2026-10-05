@@ -30,20 +30,20 @@ spec:
         namespace: stackrox
 
       sources:
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: cluster/hub/extras/nmstate
+          ref: values
+
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config
           # chart: rhacs-config
           path: .
-          targetRevision: 0.8.1
+          targetRevision: 0.8.2
           helm:
             releaseName: rhacs-config
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{ .name }}/values/rhacs-config.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          # path: cluster/hub/extras/nmstate
-          ref: values
 
       syncPolicy:
         automated:
