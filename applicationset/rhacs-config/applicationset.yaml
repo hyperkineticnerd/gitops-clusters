@@ -45,6 +45,15 @@ spec:
             valueFiles:
               - $values/cluster/{{ .name }}/values/rhacs-config.yaml
 
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config-init-bundle
+          # chart: rhacs-config-init-bundle
+          path: .
+          targetRevision: 0.1.1
+          helm:
+            releaseName: rhacs-config-init-bundle
+            ignoreMissingValueFiles: true
+            valueFiles: []
+
       syncPolicy:
         automated:
           enabled: false
