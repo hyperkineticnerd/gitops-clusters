@@ -38,7 +38,7 @@ spec:
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config
           # chart: rhacs-config
           path: .
-          targetRevision: 0.8.5
+          targetRevision: 0.8.6
           helm:
             releaseName: rhacs-config
             ignoreMissingValueFiles: true
