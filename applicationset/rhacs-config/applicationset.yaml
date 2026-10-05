@@ -45,6 +45,15 @@ spec:
             valueFiles:
               - $values/cluster/{{ .name }}/values/rhacs-config.yaml
 
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config-central-declarative
+          # chart: rhacs-config-central-declarative
+          path: .
+          targetRevision: 0.8.0
+          helm:
+            releaseName: rhacs-config-central-declarative
+            ignoreMissingValueFiles: true
+            valueFiles: []
+
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-config-init-bundle
           # chart: rhacs-config-init-bundle
           path: .
