@@ -64,4 +64,4 @@ spec:
           kind: Deployment
           name: matrix-synapse
           jqPathExpressions:
-            - .spec.template.metadata.annotations
+            - .spec.template.metadata.annotations | .[keys[] | select(startswith("checksum/"))]
