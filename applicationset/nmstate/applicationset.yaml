@@ -35,6 +35,16 @@ spec:
           # path: cluster/hub/extras/nmstate
           ref: values
 
+        # - repoURL: oci://ghcr.io/hyperkineticnerd/charts/olm-operator
+        #   # chart: olm-operator
+        #   path: .
+        #   targetRevision: 0.8.0
+        #   helm:
+        #     releaseName: nmstate-operator
+        #     ignoreMissingValueFiles: true
+        #     valueFiles:
+        #       - $values/cluster/hub/values/nmstate-operator.yaml
+
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/nmstate
           # chart: nmstate
           path: .
