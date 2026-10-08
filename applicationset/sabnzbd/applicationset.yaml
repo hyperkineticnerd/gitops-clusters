@@ -30,19 +30,20 @@ spec:
         namespace: arr-downloaders
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: sabnzbd
-          targetRevision: 0.1.2
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/sabnzbd
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/sabnzbd
+          # chart: sabnzbd
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: sabnzbd
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/sabnzbd.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/sabnzbd
-          ref: values
 
       syncPolicy:
         automated:

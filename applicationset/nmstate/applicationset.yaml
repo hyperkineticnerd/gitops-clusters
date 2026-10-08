@@ -30,19 +30,20 @@ spec:
         namespace: openshift-nmstate
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: nmstate
-          targetRevision: 0.1.0
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: cluster/hub/extras/nmstate
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/nmstate
+          # chart: nmstate
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: nmstate
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/hub/values/nmstate.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          # path: cluster/hub/extras/nmstate
-          ref: values
 
       syncPolicy:
         automated:

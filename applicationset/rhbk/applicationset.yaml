@@ -35,9 +35,10 @@ spec:
           path: cluster/{{ .name }}/extras/rhbk
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: rhbk
-          targetRevision: 0.1.0
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhbk
+          # chart: rhbk
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: keycloak
             ignoreMissingValueFiles: true

@@ -45,9 +45,10 @@ spec:
           helm:
             releaseName: trident
 
-        - repoURL: https://charts.hknlab.io
-          chart: trident
-          targetRevision: 0.1.1
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/trident
+          # chart: trident
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: trident-config
             ignoreMissingValueFiles: true

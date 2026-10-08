@@ -37,24 +37,27 @@ spec:
           # path: cluster/{{.name}}/extras/metallb
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: metallb-operator
-          targetRevision: 0.1.0
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/metallb-operator
+          # chart: metallb-operator
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: metallb
 
-        - repoURL: https://charts.hknlab.io
-          chart: metallb-bgp
-          targetRevision: 0.1.5
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/metallb-bgp
+          # chart: metallb-bgp
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: metallb
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/hub/values/bgp.yaml
 
-        - repoURL: https://charts.hknlab.io
-          chart: metallb-loadbalancer
-          targetRevision: 0.1.1
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/metallb-loadbalancer
+          # chart: metallb-loadbalancer
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: metallb
             ignoreMissingValueFiles: true

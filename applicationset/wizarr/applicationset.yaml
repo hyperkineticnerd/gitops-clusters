@@ -35,9 +35,10 @@ spec:
           path: cluster/{{.name}}/extras/wizarr
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: wizarr
-          targetRevision: 0.1.5
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/wizarr
+          # chart: wizarr
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: wizarr
             ignoreMissingValueFiles: true

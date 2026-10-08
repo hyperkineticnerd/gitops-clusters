@@ -35,9 +35,10 @@ spec:
           path: cluster/{{ .name }}/extras/openshift-ingress-config
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: openshift-ingress-config
-          targetRevision: 0.1.2
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/openshift-ingress-config
+          # chart: openshift-ingress-config
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: openshift-ingress-config
             ignoreMissingValueFiles: true

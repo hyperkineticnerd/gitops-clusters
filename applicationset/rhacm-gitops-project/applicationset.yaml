@@ -32,9 +32,10 @@ spec:
         namespace: openshift-gitops
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: rhacm-gitops-project
-          targetRevision: 0.1.1
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacm-gitops-project
+          # chart: rhacm-gitops-project
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: '{{ .name }}'
             valuesObject:

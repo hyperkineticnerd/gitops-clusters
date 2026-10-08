@@ -34,9 +34,15 @@ spec:
         namespace: stackrox
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: rhacs-secured-cluster
-          targetRevision: 0.1.1
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: environment/all/extras/rhacs-secured-cluster
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhacs-secured-cluster
+          # chart: rhacs-secured-cluster
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: rhacs-secured-cluster
             ignoreMissingValueFiles: true
@@ -45,11 +51,6 @@ spec:
               - $values/cluster/{{ .name }}/values/rhacs-secured-cluster.yaml
             valuesObject:
               clusterName: '{{ .name }}'
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: environment/all/extras/rhacs-secured-cluster
-          ref: values
 
       syncPolicy:
         automated:

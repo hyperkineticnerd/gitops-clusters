@@ -30,19 +30,20 @@ spec:
         namespace: arr-collectors
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: readarr
-          targetRevision: 0.1.1
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/readarr
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/readarr
+          # chart: readarr
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: readarr
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/readarr.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/readarr
-          ref: values
 
       syncPolicy:
         automated:

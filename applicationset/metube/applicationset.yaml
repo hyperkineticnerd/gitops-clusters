@@ -30,19 +30,20 @@ spec:
         namespace: metube
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: metube
-          targetRevision: 0.1.0
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/metube
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/metube
+          # chart: metube
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: metube
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/metube.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/metube
-          ref: values
 
       syncPolicy:
         automated:

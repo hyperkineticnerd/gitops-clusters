@@ -30,19 +30,20 @@ spec:
         namespace: arr-management
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: redirecterr
-          targetRevision: 0.1.1
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/redirecterr
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/redirecterr
+          # chart: redirecterr
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: redirecterr
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/redirecterr.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/redirecterr
-          ref: values
 
       syncPolicy:
         automated:

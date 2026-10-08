@@ -30,20 +30,20 @@ spec:
         namespace: arr-management
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: configarr
-          # path: .
-          targetRevision: 0.1.2
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          path: cluster/{{.name}}/extras/configarr
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/configarr
+          # chart: configarr
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: configarr
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/cluster/{{.name}}/values/configarr.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          path: cluster/{{.name}}/extras/configarr
-          ref: values
 
       syncPolicy:
         automated:

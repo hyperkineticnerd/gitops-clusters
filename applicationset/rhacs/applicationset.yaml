@@ -35,9 +35,15 @@ spec:
         namespace: rhacs-operator
 
       sources:
-        - repoURL: https://charts.hknlab.io
-          chart: olm-operator
-          targetRevision: 0.3.0
+        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
+          targetRevision: HEAD
+          # path: cluster/{{ .name }}/extras/nmstate
+          ref: values
+
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/olm-operator
+          # chart: olm-operator
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: rhacs
             ignoreMissingValueFiles: true
@@ -45,11 +51,6 @@ spec:
               - $values/environment/all/values/rhacs.yaml
               - $values/environment/{{ .values.env }}/values/rhacs.yaml
               - $values/cluster/{{ .name }}/values/rhacs.yaml
-
-        - repoURL: https://gitlab.developer.hkn.lab/IaC/openshift4/clusters/all.git
-          targetRevision: HEAD
-          # path: cluster/{{ .name }}/extras/nmstate
-          ref: values
 
       syncPolicy:
         automated:

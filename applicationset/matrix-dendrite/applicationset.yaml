@@ -43,9 +43,10 @@ spec:
           path: cluster/{{ .name }}/extras/matrix-dendrite
           ref: values
 
-        - repoURL: https://charts.hknlab.io
-          chart: matrix-dendrite
-          targetRevision: 0.1.0
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/matrix-dendrite
+          # chart: matrix-dendrite
+          path: .
+          targetRevision: 0.8.0
           helm:
             releaseName: matrix-dendrite
             ignoreMissingValueFiles: true
