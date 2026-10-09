@@ -1,17 +1,14 @@
-
-operator:
-  enable: true
-  name: rhbk-operator
-  namespace:
-    enabled: true
-    name: keycloak
-  install:
-    installPlanApproval: Automatic
-  catalog:
-    channel: stable-v26.6
-    source: redhat-operators
-    sourceNamespace: openshift-marketplace
-  operatorGroup:
-    enabled: true
-    additionalNamespaces:
-    - keycloak
+name: rhbk-operator
+namespace:
+  enabled: true
+  name: keycloak
+install:
+  installPlanApproval: Automatic
+catalog:
+  channel: stable-v26.6
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+operatorGroup:
+  enabled: true
+  additionalNamespaces:
+  - keycloak
