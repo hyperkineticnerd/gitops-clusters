@@ -35,20 +35,20 @@ spec:
           path: cluster/{{ .name }}/extras/rhbk
           ref: values
 
-        # - repoURL: oci://ghcr.io/hyperkineticnerd/charts/olm-operator
-        #   # chart: olm-operator
-        #   path: .
-        #   targetRevision: 0.8.0
-        #   helm:
-        #     releaseName: rhbk-operator
-        #     ignoreMissingValueFiles: true
-        #     valueFiles:
-        #       - $values/cluster/hub/values/rhbk-operator.yaml
+        - repoURL: oci://ghcr.io/hyperkineticnerd/charts/olm-operator
+          # chart: olm-operator
+          path: .
+          targetRevision: 0.8.0
+          helm:
+            releaseName: rhbk-operator
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - $values/cluster/hub/values/rhbk-operator.yaml
 
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhbk
           # chart: rhbk
           path: .
-          targetRevision: 0.8.0
+          targetRevision: 0.8.1
           helm:
             releaseName: keycloak
             ignoreMissingValueFiles: true
