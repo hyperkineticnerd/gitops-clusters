@@ -43,7 +43,7 @@ spec:
             releaseName: rhbk-operator
             ignoreMissingValueFiles: true
             valueFiles:
-              - $values/cluster/hub/values/rhbk-operator.yaml
+              - $values/cluster/{{ .name }}/values/rhbk-operator.yaml
 
         - repoURL: oci://ghcr.io/hyperkineticnerd/charts/rhbk
           # chart: rhbk
