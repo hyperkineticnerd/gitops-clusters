@@ -52,7 +52,7 @@ resources:
 initContainers:
   - name: gluetun
     # image: qmcgaw/gluetun:v3.40.0
-    image: ghcr.io/qdm12/gluetun:latest
+    image: ghcr.io/qdm12/gluetun:v3.40.4
     restartPolicy: Always
     securityContext:
       privileged: true
