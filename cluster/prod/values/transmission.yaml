@@ -59,6 +59,7 @@ initContainers:
       capabilities:
         add:
           - NET_ADMIN
+          - SYS_MODULE
     envFrom:
       - secretRef:
           name: openvpn-secret
