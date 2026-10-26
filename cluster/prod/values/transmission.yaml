@@ -62,7 +62,7 @@ initContainers:
           - SYS_MODULE
     envFrom:
       - secretRef:
-          name: openvpn-secret
+          name: gluetun-secret
     # volumeMounts:
     #   - name: gluetun
     #     mountPath: /gluetun
